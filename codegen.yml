@@ -1,0 +1,8 @@
+overwrite: true
+emitLegacyCommonJSImports: false
+generates:
+  ./src/generated/gql-types.ts:
+    schema: 'http://localhost:9000/graphql'
+    plugins:
+      - typescript
+      - typescript-resolvers
