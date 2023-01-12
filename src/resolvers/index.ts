@@ -1,9 +1,12 @@
 import { Resolvers } from "../generated/gql-types";
-import { user } from "../resolvers/auth/user";
+import { user, signUp } from "../resolvers/auth/user";
 
 export const resolvers: Resolvers = {
   Query: {
     user,
+  },
+  Mutation: {
+    signUp,
   },
 };
 

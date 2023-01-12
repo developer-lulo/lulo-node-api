@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --watch src --ext '*' --exec 'yarn build && yarn start'",
-    "clean": "rm -fr dist ",
+    "prebuild": "rm -fr dist ",
     "start": "node --enable-source-maps --experimental-specifier-resolution=node ./dist/index.js",
     "codegen": "NODE_OPTIONS=\"--loader ts-node/esm\" graphql-codegen-esm --config codegen.yml"
   },
@@ -22,18 +22,18 @@
     "@graphql-tools/utils": "^9.1.1",
     "apollo-server": "^3.11.1",
     "apollo-server-express": "^3.11.1",
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express-jwt": "^7.7.7",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.26.0"
+    "sequelize": "^6.26.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.15.0",
     "@graphql-codegen/introspection": "2.2.1",
-    "@graphql-codegen/typescript": "2.8.3",
-    "@graphql-codegen/typescript-resolvers": "2.7.8",
     "@types/node": "^18.11.10",
     "babel-register": "^6.26.0",
     "nodemon": "^2.0.20",

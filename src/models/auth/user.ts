@@ -1,4 +1,7 @@
-const userModel = (sequelize, DataTypes) => {
+import { Model, ModelDefined } from "sequelize";
+import { User } from "../../generated/gql-types";
+
+const userModel = (sequelize, DataTypes): ModelDefined<any, any> => {
   const User = sequelize.define(
     "user",
     {
@@ -49,7 +52,7 @@ const userModel = (sequelize, DataTypes) => {
       tableName: "users",
       indexes: [
         {
-          name: "id_email",
+          name: "users_id_email",
           fields: ["id", "email"],
         },
       ],

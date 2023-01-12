@@ -4,7 +4,6 @@ import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
 import express from "express";
 import { expressjwt } from "express-jwt";
-import jwt from "jsonwebtoken";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
 // Constants and env vars
@@ -13,6 +12,7 @@ export const JWT_SECRET = process.env.JWT_SECRET;
 
 import schema from "./schema";
 import resolvers from "./resolvers";
+import { loadRoutes } from "./routes";
 
 const app = express();
 app.use(
@@ -25,30 +25,16 @@ app.use(
   })
 );
 
+// REST API
+loadRoutes(app);
+
+// GraphQL API
 const luloSchema = makeExecutableSchema({
   typeDefs: schema,
   resolvers: resolvers,
 });
 
-// app.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
-//   const user = await User.findOne((user) => user.email === email);
-//   if (user && user.password === password) {
-//     const token = jwt.sign({ sub: user.id }, JWT_SECRET);
-//     res.json({ token });
-//   } else {
-//     res.sendStatus(401);
-//   }
-// });
 
-// const typeDefs = await readFile("./schema.graphql", "utf-8");
-// const context = async ({ req }) => {
-//   if (req.auth) {
-//     const user = await User.findById(req.auth.sub);
-//     return { user };
-//   }
-//   return {};
-// };
 const apolloServer = new ApolloServer({
   schema: luloSchema,
 });

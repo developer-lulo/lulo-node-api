@@ -6,9 +6,11 @@ export default gql`
     # me: User
   }
 
-  #   extend type Mutation {
-  #     login(email: String, password: String): String!
-  #   }
+  type Mutation {
+    # login(email: String, password: String): String!
+    signUp(input: SignInput): Token
+  }
+
 
   type User {
     id: String!
@@ -17,5 +19,17 @@ export default gql`
     displayName: String
     avatar: String
     role: String
+    updatedAt: String
+    createdAt: String
+  }
+
+  type Token {
+    token: String!
+    user: User
+  }
+
+  input SignInput {
+    email: String!
+    password: String!
   }
 `;

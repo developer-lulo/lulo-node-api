@@ -46,6 +46,11 @@ module.exports = {
           field: "updated_at",
         },
       });
+      await queryInterface.addIndex("users", {
+        name: "users_id_email",
+        fields: ["id", "email"],
+        unique: true,
+      });
     }),
 
   down: (queryInterface: QueryInterface, Sequelize): Promise<void> =>
