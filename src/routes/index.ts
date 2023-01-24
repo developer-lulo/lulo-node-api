@@ -28,14 +28,16 @@ export const loadRoutes = (app: Express) => {
         const result = await route.handler(req, res);
         res.status(200).send({
           success: true,
-          ...result,
+          data: {
+            ...result,
+          },
         });
       } catch (error) {
         res.status(error.code || 500).send({
           success: false,
           data: {
             ...error,
-            rawErrorMessage: error.message
+            rawErrorMessage: error.message,
           },
         });
       }
