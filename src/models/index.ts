@@ -1,28 +1,24 @@
-
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import { Sequelize, DataTypes } from "sequelize";
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import { Sequelize } from "sequelize-typescript";
 
 import databaseConnection from "../config";
 
-import getUserModel from "./auth/user";
+import { User } from "./auth/user";
 
-dotenv.config()
+dotenv.config();
 const env = process.env.NODE_ENV || "development";
 const databaseConfig = databaseConnection[env];
-const sequelize = new Sequelize(databaseConfig);
+const sequelize = new Sequelize({
+  ...databaseConfig,
+  models: [User],
+});
 
 const luloDatabase = {
   sequelize, // db connection
   Sequelize, // Main class
   models: {
-    User: getUserModel(sequelize, DataTypes),
+    User,
   },
 };
-
-Object.keys(luloDatabase.models).forEach((modelName) => {
-  if (luloDatabase.models[modelName].associate) {
-    luloDatabase.models[modelName].associate(luloDatabase.models);
-  }
-});
 
 export default luloDatabase;
