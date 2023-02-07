@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import models from "../../models";
+import luloDatabase from "../../models";
 import { generateToken, validatePassword } from "./utils";
 
 interface SignInBody {
@@ -18,18 +18,25 @@ export const handler = async (req: Request, res: Response) => {
     };
   }
 
-  const userExists = await models.User.findOne({
+  const userExists = await luloDatabase.models.User.findOne({
     where: {
       email,
     },
   });
+
+  if (!userExists) {
+    throw {
+      message: "Email and Password combination incorrect",
+      code: 401,
+    };
+  }
 
   const passMatched = await validatePassword({
     dbPass: userExists.dataValues.password,
     reqPass: password,
   });
 
-  if (!userExists || !passMatched) {
+  if (!passMatched) {
     throw {
       message: "Email and Password combination incorrect",
       code: 401,

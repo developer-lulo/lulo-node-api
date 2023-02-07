@@ -1,7 +1,7 @@
 import { Express, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../..";
-import models from "../../models";
+import luloDatabase from "../../models";
 import { v4 as uuidv4 } from "uuid";
 import { cryptPassword, generateToken } from "./utils";
 
@@ -22,7 +22,7 @@ export const handler = async (req: Request, res: Response) => {
   }
 
   // check if already exists a user with the same email
-  const userExists = await models.User.findOne({
+  const userExists = await luloDatabase.models.User.findOne({
     where: {
       email,
     },
@@ -35,7 +35,7 @@ export const handler = async (req: Request, res: Response) => {
   }
 
   // creating the new user
-  const newUser = await models.User.create({
+  const newUser = await luloDatabase.models.User.create({
     id: uuidv4(),
     email,
     password: await cryptPassword(password),

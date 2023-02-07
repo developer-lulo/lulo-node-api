@@ -1,9 +1,35 @@
-import { Model, ModelDefined } from "sequelize";
-import { User } from "../../generated/gql-types";
+"use strict";
+import { Model } from "sequelize";
 
-const userModel = (sequelize, DataTypes): ModelDefined<any, any> => {
-  const User = sequelize.define(
-    "user",
+interface UserAttributes {
+  id: string;
+  displayName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  avatar: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export default (sequelize, DataTypes) => {
+  class User extends Model<UserAttributes> implements UserAttributes {
+    id: string;
+    displayName: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+    avatar: string;
+    createdAt: Date;
+    updatedAt: Date;
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {}
+  }
+  User.init(
     {
       id: {
         allowNull: false,
@@ -48,7 +74,8 @@ const userModel = (sequelize, DataTypes): ModelDefined<any, any> => {
       },
     },
     {
-      freezeTableName: true,
+      sequelize,
+      modelName: "User",
       tableName: "users",
       indexes: [
         {
@@ -59,12 +86,5 @@ const userModel = (sequelize, DataTypes): ModelDefined<any, any> => {
       timestamps: true,
     }
   );
-
-  User.associate = (models) => {
-    // User.hasMany(models.UserDevice, { as: "devices" });
-  };
-
   return User;
 };
-
-export default userModel;
