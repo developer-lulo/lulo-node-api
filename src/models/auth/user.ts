@@ -27,29 +27,43 @@ interface UserCreationAttributes
   > {}
 
 @Table({
-  timestamps: true,
-  indexes: [],
+  modelName: "User",
+  tableName: "users",
+  indexes: [
+    {
+      name: "users_id_email",
+      fields: ["id", "email"],
+    },
+  ],
 })
 export class User
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  @Column({ primaryKey: true, allowNull: false, type: DataType.TEXT })
+  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
   id: string;
 
-  @Column({ allowNull: false, field: "display_name" })
+  @Column({
+    allowNull: false,
+    field: "display_name",
+    type: DataType.STRING(128),
+  })
   displayName: string;
 
-  @Column({ allowNull: false, unique: true })
+  @Column({ allowNull: false, unique: true, type: DataType.STRING(256) })
   email: string;
 
-  @Column({ allowNull: true, field: "phone_number" })
+  @Column({
+    allowNull: true,
+    field: "phone_number",
+    type: DataType.STRING(128),
+  })
   phoneNumber: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, type: DataType.STRING(256) })
   password: string;
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: true, type: DataType.TEXT })
   avatar: string;
 
   @CreatedAt
