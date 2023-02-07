@@ -14,6 +14,8 @@ import schema from "./schema";
 import resolvers from "./resolvers";
 import { loadRoutes } from "./routes";
 
+import luloDatabase from "./models";
+
 const app = express();
 app.use(
   cors(),
@@ -34,14 +36,19 @@ const luloSchema = makeExecutableSchema({
   resolvers: resolvers,
 });
 
-
 const apolloServer = new ApolloServer({
   schema: luloSchema,
+  context: {},
 });
+
 await apolloServer.start();
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
-app.listen({ port: APP_PORT }, () => {
-  console.log(`Server running on port ${APP_PORT}`);
-  console.log(`GraphQL endpoint: http://localhost:${APP_PORT}/graphql`);
+// init the database connection
+luloDatabase.sequelize.sync().then(() => {
+  // start the express and graphql server
+  app.listen({ port: APP_PORT }, () => {
+    console.log(`Server running on port ${APP_PORT}`);
+    console.log(`GraphQL endpoint: http://localhost:${APP_PORT}/graphql`);
+  });
 });
