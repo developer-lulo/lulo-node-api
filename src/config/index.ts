@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { Options } from "sequelize";
 
 // Declare all different environments
@@ -28,4 +27,6 @@ export const config: DBConfig = {
   },
 };
 
-export default config
+//@ts-ignore Required for Sequelize migrations interop
+export = config;
+

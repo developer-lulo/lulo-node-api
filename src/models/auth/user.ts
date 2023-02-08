@@ -7,7 +7,12 @@ import {
   CreatedAt,
   UpdatedAt,
   DataType,
+  BelongsToMany,
+  HasMany,
 } from "sequelize-typescript";
+import { Channel } from "./channel";
+import { ChannelMessage } from "./channel_message";
+import { UsersChannelsJunction } from "./users-channels-junction";
 
 interface UserAttributes {
   id: string;
@@ -73,4 +78,8 @@ export class User
   @UpdatedAt
   @Column({ field: "updated_at" })
   updatedAt: Date;
+
+  // relations
+  @BelongsToMany(() => Channel, () => UsersChannelsJunction)
+  channels: Channel[];
 }
