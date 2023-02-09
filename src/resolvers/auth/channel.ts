@@ -22,13 +22,10 @@ export const userChannels: Resolver<
           transaction,
         }
       );
-      console.log(channelsJ);
 
       const channelIds = channelsJ.map((channelJ) => {
         return channelJ.dataValues.channelId;
       });
-
-      console.log(channelIds);
 
       return await luloDatabase.models.Channel.findAll({
         where: {
@@ -38,8 +35,6 @@ export const userChannels: Resolver<
       });
     }
   );
-
-  console.log(userChannelRecords)
   return userChannelRecords.map((chR) => {
     return {
       ...chR.dataValues,
