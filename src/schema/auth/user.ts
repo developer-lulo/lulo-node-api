@@ -18,7 +18,6 @@ export default gql`
     phoneNumber: String
     displayName: String
     avatar: String
-    role: String
     updatedAt: String
     createdAt: String
   }

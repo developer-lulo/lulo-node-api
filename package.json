@@ -9,7 +9,9 @@
     "dev": "nodemon --watch src --ext '*' --exec 'yarn build && yarn start'",
     "prebuild": "rm -fr dist ",
     "start": "node --enable-source-maps --experimental-specifier-resolution=node ./dist/index.js",
-    "codegen": "NODE_OPTIONS=\"--loader ts-node/esm\" graphql-codegen-esm --config codegen.yml"
+    "codegen": "NODE_OPTIONS=\"--loader ts-node/esm\" graphql-codegen-esm --config codegen.yml",
+    "migrations": "tsc --project tsconfig.sequelize.json && sh scripts/add-commonjs-package-json.sh && sequelize-cli db:migrate",
+    "migrations:undo": "tsc --project tsconfig.sequelize.json && sh scripts/add-commonjs-package-json.sh && sequelize-cli db:migrate:undo"
   },
   "keywords": [],
   "author": "",

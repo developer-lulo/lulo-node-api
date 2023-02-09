@@ -7,7 +7,13 @@ import {
   CreatedAt,
   UpdatedAt,
   DataType,
+  BelongsToMany,
+  HasMany,
 } from "sequelize-typescript";
+import { Channel } from "./channel";
+import { ChannelMessage } from "./channel_message";
+import { UsersChannelsJunction } from "./users-channels-junction";
+import { v4 as uuidv4 } from "uuid";
 
 interface UserAttributes {
   id: string;
@@ -40,7 +46,12 @@ export class User
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataType.STRING(128),
+    defaultValue: uuidv4(),
+  })
   id: string;
 
   @Column({
@@ -73,4 +84,8 @@ export class User
   @UpdatedAt
   @Column({ field: "updated_at" })
   updatedAt: Date;
+
+  // relations
+  @BelongsToMany(() => Channel, () => UsersChannelsJunction)
+  channels: Channel[];
 }
