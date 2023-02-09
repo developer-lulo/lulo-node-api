@@ -56,5 +56,6 @@ module.exports = {
   down: (queryInterface: QueryInterface, Sequelize): Promise<void> =>
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.dropTable("users");
+      await queryInterface.removeIndex("users", "users_id_email")
     }),
 };

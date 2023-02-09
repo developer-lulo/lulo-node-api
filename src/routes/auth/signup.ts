@@ -4,6 +4,8 @@ import { JWT_SECRET } from "../..";
 import luloDatabase from "../../models";
 import { v4 as uuidv4 } from "uuid";
 import { cryptPassword, generateToken } from "./utils";
+import { Transaction } from "sequelize";
+import { DEFAULT_CHANNEL_ON_CREATE_USER } from "../../models/auth/channel";
 
 export interface SignUpBody {
   email: string;
@@ -35,21 +37,52 @@ export const handler = async (req: Request, res: Response) => {
   }
 
   // creating the new user
-  const newUser = await luloDatabase.models.User.create({
-    id: uuidv4(),
-    email,
-    password: await cryptPassword(password),
-    displayName: email, // email as default, the user can change it later.
-  }).catch((error) => {
-    throw {
-      error,
-      message: "Something went wrong creating the new user",
-    };
-  });
+
+  const { userId } = await luloDatabase.sequelize
+    .transaction(async (transaction: Transaction) => {
+      const newUser = await luloDatabase.models.User.create(
+        {
+          id: uuidv4(),
+          email,
+          password: await cryptPassword(password),
+          displayName: email, // email as default, the user can change it later.
+        },
+        {
+          transaction,
+        }
+      );
+      const newUserFirstChannel = await luloDatabase.models.Channel.create(
+        {
+          ...DEFAULT_CHANNEL_ON_CREATE_USER,
+        },
+        { transaction }
+      );
+
+      await luloDatabase.models.UsersChannelsJunction.create(
+        {
+          channelId: newUserFirstChannel.dataValues.id,
+          userId: newUser.dataValues.id,
+          id: uuidv4(),
+        },
+        {
+          transaction,
+        }
+      );
+
+      return {
+        userId: newUser.dataValues.id,
+      };
+    })
+    .catch((error) => {
+      throw {
+        error,
+        message: "Something went wrong creating the new user",
+      };
+    });
 
   // generating the token to signin at the same time
   const token = generateToken({
-    userId: newUser.dataValues.id,
+    userId,
   });
 
   return {

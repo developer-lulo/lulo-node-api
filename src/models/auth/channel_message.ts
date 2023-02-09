@@ -12,6 +12,7 @@ import {
 } from "sequelize-typescript";
 import { Channel } from "./channel";
 import { User } from "./user";
+import { v4 as uuidv4 } from "uuid";
 
 export type ChannelMessageType = "task";
 export type ChannelMessageStatus = "done" | "stored";
@@ -33,13 +34,19 @@ interface ChannelMessageCreationAttributes
 @Table({
   modelName: "ChannelMessage",
   tableName: "channel_messages",
+  timestamps: true,
   indexes: [],
 })
 export class ChannelMessage
   extends Model<ChannelMessageAttributes, ChannelMessageCreationAttributes>
   implements ChannelMessageAttributes
 {
-  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataType.STRING(128),
+    defaultValue: uuidv4(),
+  })
   id: string;
 
   @Column({ field: "text", type: DataType.TEXT })

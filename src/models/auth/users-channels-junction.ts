@@ -11,6 +11,7 @@ import {
 } from "sequelize-typescript";
 import { Channel } from "./channel";
 import { User } from "./user";
+import { v4 as uuidv4 } from "uuid";
 
 interface UsersChannelsJunctionAttributes {
   id: string;
@@ -29,6 +30,7 @@ interface UsersChannelsJunctionCreationAttributes
 @Table({
   modelName: "UsersChannelsJunction",
   tableName: "users_channels_junction",
+  timestamps: true,
   //   indexes: [],
 })
 export class UsersChannelsJunction
@@ -39,7 +41,12 @@ export class UsersChannelsJunction
   implements UsersChannelsJunctionAttributes
 {
   // columns
-  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataType.STRING(128),
+    defaultValue: uuidv4(),
+  })
   id: string;
 
   @CreatedAt
@@ -52,11 +59,11 @@ export class UsersChannelsJunction
 
   // foreign keys
   @ForeignKey(() => Channel)
-  @Column({ type: DataType.STRING(128) })
+  @Column({ type: DataType.STRING(128), field: "channel_id" })
   channelId: string;
 
   @ForeignKey(() => User)
-  @Column({ type: DataType.STRING(128) })
+  @Column({ type: DataType.STRING(128), field: "user_id" })
   userId: string;
 
   // relations

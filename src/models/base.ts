@@ -8,9 +8,10 @@ import {
   UpdatedAt,
   DataType,
 } from "sequelize-typescript";
+import { v4 as uuidv4 } from "uuid";
 
 interface BaseAttributes {
-  id: string;
+  id: string; //create it by default using uuidv4
   // other properties
   createdAt: Date;
   updatedAt: Date;
@@ -23,13 +24,19 @@ interface BaseCreationAttributes
   modelName: "Base",
   tableName: "base",
   indexes: [],
+  timestamps: true,
 })
 export class Base
   extends Model<BaseAttributes, BaseCreationAttributes>
   implements BaseAttributes
 {
   // columns
-  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataType.STRING(128),
+    defaultValue: uuidv4(),
+  })
   id: string;
 
   // other properties definitions

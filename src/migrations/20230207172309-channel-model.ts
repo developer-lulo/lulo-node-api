@@ -1,4 +1,18 @@
 import { QueryInterface, DataTypes, QueryTypes } from "sequelize";
+import { ChannelCharacterAttributes } from "../models/auth/channel_character";
+
+const CHARACTERS = [
+  {
+    id: "14d0e85d-4374-4932-80a8-b72b9390fb3d",
+    description:
+      "Déjame ser tu asistente en la tarea de mantener a salvo tus recuerdos importantes. Mi capacidad de análisis me permite predecir tus necesidades con base en tus preguntas y solicitudes. ¿Te gustaría que trabajemos juntos en esto?",
+    display_name: "Shikamaru",
+    image_url:
+      "https://static.myfigurecollection.net/upload/items/large/1005668.jpg",
+    created_at: new Date(),
+    updated_at: new Date(),
+  },
+];
 
 module.exports = {
   up: (queryInterface: QueryInterface, Sequelize): Promise<void> =>
@@ -161,6 +175,8 @@ module.exports = {
           field: "updated_at",
         },
       });
+
+      await queryInterface.bulkInsert("channel_characters", CHARACTERS);
     }),
 
   down: (queryInterface: QueryInterface, Sequelize): Promise<void> =>

@@ -15,6 +15,16 @@ import {
 import { ChannelCharacter } from "./channel_character";
 import { User } from "./user";
 import { UsersChannelsJunction } from "./users-channels-junction";
+import { v4 as uuidv4 } from "uuid";
+
+export const DEFAULT_CHANNEL_ON_CREATE_USER: ChannelAttributes = {
+  id: uuidv4(),
+  channelCharacterId: "14d0e85d-4374-4932-80a8-b72b9390fb3d",
+  displayName: "Un paso a la vez",
+  imageUrl: undefined,
+  createdAt: undefined,
+  updatedAt: undefined,
+};
 
 interface ChannelAttributes {
   id: string;
@@ -31,6 +41,7 @@ interface ChannelCreationAttributes
 @Table({
   modelName: "Channel",
   tableName: "channels",
+  timestamps: true,
   //   indexes: [],
 })
 export class Channel
@@ -38,13 +49,19 @@ export class Channel
   implements ChannelAttributes
 {
   // columns
-  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
+
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataType.STRING(128),
+    defaultValue: uuidv4(),
+  })
   id: string;
 
-  @Column({ type: DataType.STRING(128) })
+  @Column({ type: DataType.STRING(128), field: "display_name" })
   displayName: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.STRING, field: "image_url" })
   imageUrl: string;
 
   @CreatedAt
@@ -57,7 +74,7 @@ export class Channel
 
   // foreign keys
   @ForeignKey(() => ChannelCharacter)
-  @Column({ type: DataType.STRING(128) })
+  @Column({ type: DataType.STRING(128), field: "channel_character_id" })
   channelCharacterId: string;
 
   // relations

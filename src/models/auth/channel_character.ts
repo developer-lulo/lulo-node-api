@@ -10,14 +10,14 @@ import {
   HasMany,
 } from "sequelize-typescript";
 import { Channel } from "./channel";
-
-interface ChannelCharacterAttributes {
+import { v4 as uuidv4 } from "uuid";
+export interface ChannelCharacterAttributes {
   id: string;
   displayName: string;
   imageUrl: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface ChannelCharacterCreationAttributes
@@ -26,13 +26,19 @@ interface ChannelCharacterCreationAttributes
 @Table({
   modelName: "ChannelCharacter",
   tableName: "channel_characters",
+  timestamps: true,
   indexes: [],
 })
 export class ChannelCharacter
   extends Model<ChannelCharacterAttributes, ChannelCharacterCreationAttributes>
   implements ChannelCharacterAttributes
 {
-  @Column({ primaryKey: true, allowNull: false, type: DataType.STRING(128) })
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataType.STRING(128),
+    defaultValue: uuidv4(),
+  })
   id: string;
 
   @Column({
