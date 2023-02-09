@@ -13,7 +13,7 @@ export const resolvers: Resolvers = {
     user,
     userChannels,
     // lulo queries
-    // channelCharacters,
+    channelCharacters,
   },
   Mutation: {
     // auth mutations
