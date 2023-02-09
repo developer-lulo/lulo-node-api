@@ -2,4 +2,7 @@
 import userSchema from "./auth/user";
 import channelSchema from "./auth/channel";
 
-export default [userSchema, channelSchema];
+// lulo Schemas
+import channelCharacterSchema from "./lulo/channel-character";
+
+export default [userSchema, channelSchema, channelCharacterSchema];
