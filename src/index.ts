@@ -15,7 +15,7 @@ import resolvers from "./resolvers";
 import { loadRoutes } from "./routes";
 
 import luloDatabase from "./models";
-
+import { createContext } from "./services/apollo-service";
 const app = express();
 app.use(
   cors(),
@@ -38,7 +38,7 @@ const luloSchema = makeExecutableSchema({
 
 const apolloServer = new ApolloServer({
   schema: luloSchema,
-  context: {},
+  context: createContext,
 });
 
 await apolloServer.start();

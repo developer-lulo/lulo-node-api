@@ -4,13 +4,14 @@ import {
   ResolverTypeWrapper,
 } from "../../generated/gql-types";
 import luloDatabase from "../../models";
+import { GraphQLContext } from "../../services/apollo-service";
 
 export const channelCharacters: Resolver<
   ResolverTypeWrapper<ChannelCharacter>[],
   {},
   any,
   {}
-> = async (parent, args: {}) => {
+> = async (_parent, _args: {}, context: GraphQLContext) => {
   const characterRecords = await luloDatabase.models.ChannelCharacter.findAll();
 
   return characterRecords.map((chR) => {
