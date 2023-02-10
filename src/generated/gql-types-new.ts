@@ -16,10 +16,22 @@ export type Scalars = {
 
 export type Channel = {
   __typename?: 'Channel';
+  channelCharacter?: Maybe<ChannelCharacter>;
+  channelCharacterId?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['String']>;
   displayName?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+};
+
+export type ChannelCharacter = {
+  __typename?: 'ChannelCharacter';
+  createdAt?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
+  displayName: Scalars['String'];
+  id: Scalars['String'];
+  imageUrl: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
 };
 
@@ -35,6 +47,7 @@ export type MutationSignUpArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  channelCharacters?: Maybe<Array<Maybe<ChannelCharacter>>>;
   user?: Maybe<User>;
   userChannels?: Maybe<Array<Maybe<Channel>>>;
 };
@@ -142,6 +155,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Channel: ResolverTypeWrapper<Channel>;
+  ChannelCharacter: ResolverTypeWrapper<ChannelCharacter>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   SignInput: SignInput;
@@ -154,6 +168,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Channel: Channel;
+  ChannelCharacter: ChannelCharacter;
   Mutation: {};
   Query: {};
   SignInput: SignInput;
@@ -163,10 +178,22 @@ export type ResolversParentTypes = {
 };
 
 export type ChannelResolvers<ContextType = any, ParentType extends ResolversParentTypes['Channel'] = ResolversParentTypes['Channel']> = {
+  channelCharacter?: Resolver<Maybe<ResolversTypes['ChannelCharacter']>, ParentType, ContextType>;
+  channelCharacterId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ChannelCharacterResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChannelCharacter'] = ResolversParentTypes['ChannelCharacter']> = {
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -176,6 +203,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  channelCharacters?: Resolver<Maybe<Array<Maybe<ResolversTypes['ChannelCharacter']>>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>;
   userChannels?: Resolver<Maybe<Array<Maybe<ResolversTypes['Channel']>>>, ParentType, ContextType, RequireFields<QueryUserChannelsArgs, 'userId'>>;
 };
@@ -199,6 +227,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   Channel?: ChannelResolvers<ContextType>;
+  ChannelCharacter?: ChannelCharacterResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;

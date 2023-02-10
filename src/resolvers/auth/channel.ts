@@ -5,6 +5,7 @@ import {
   Channel,
   RequireFields,
   QueryUserChannelsArgs,
+  ChannelResolvers,
 } from "../../generated/gql-types";
 import luloDatabase from "../../models";
 
@@ -29,7 +30,7 @@ export const userChannels: Resolver<
 
       return await luloDatabase.models.Channel.findAll({
         where: {
-          id: channelIds
+          id: channelIds,
         },
         transaction,
       });
@@ -38,8 +39,22 @@ export const userChannels: Resolver<
   return userChannelRecords.map((chR) => {
     return {
       ...chR.dataValues,
-      updatedAt: chR.updatedAt.toString(),
-      createdAt: chR.updatedAt.toString(),
+      updatedAt: chR.updatedAt.toISOString(),
+      createdAt: chR.updatedAt.toISOString(),
     };
   });
+};
+
+// type
+export const ChannelType: ChannelResolvers<any, Channel> = {
+  channelCharacter: async (parent: Channel, args: {}, options: any) => {
+    const characterRecord = await luloDatabase.models.ChannelCharacter.findByPk(
+      parent.channelCharacterId
+    );
+    return {
+      ...characterRecord.dataValues,
+      updatedAt: characterRecord.updatedAt.toISOString(),
+      createdAt: characterRecord.createdAt.toISOString(),
+    };
+  },
 };

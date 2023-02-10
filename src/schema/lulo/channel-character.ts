@@ -2,21 +2,20 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   type Query {
-    userChannels(userId: String!): [Channel]
+    channelCharacters: [ChannelCharacter]
   }
 
   #   type Mutation {
   #     # sendMessage(input:SendMessageInput): String
   #   }
 
-  type Channel {
+  type ChannelCharacter {
     id: String!
-    displayName: String
-    imageUrl: String
+    displayName: String!
+    imageUrl: String!
+    description: String!
     updatedAt: String
     createdAt: String
-    channelCharacterId: String
-    channelCharacter: ChannelCharacter
   }
 
   #   input SendMessageInput {

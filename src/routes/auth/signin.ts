@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import luloDatabase from "../../models";
-import { generateToken, validatePassword } from "./utils";
+import { generateToken, validatePassword } from "../../services/auth-service";
 
 interface SignInBody {
   email: string;

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../..";
 import luloDatabase from "../../models";
 import { v4 as uuidv4 } from "uuid";
-import { cryptPassword, generateToken } from "./utils";
+import { cryptPassword, generateToken } from "../../services/auth-service";
 import { Transaction } from "sequelize";
 import { DEFAULT_CHANNEL_ON_CREATE_USER } from "../../models/auth/channel";
 
