@@ -16,7 +16,9 @@ import { loadRoutes } from "./routes";
 
 import luloDatabase from "./models";
 import { createContext } from "./services/apollo-service";
+
 const app = express();
+
 app.use(
   cors(),
   express.json(),
