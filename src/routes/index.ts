@@ -5,11 +5,11 @@ import { handler as SignUpHandler } from "./auth/signup";
 
 import {
   handler as uploadFileHandler,
-  uploadFileFieldsValidator,
   uploadMulterMiddleware,
 } from "./channel/files/upload";
 
 import { handler as getFileHandler } from "./channel/files/get";
+import { userHasAccessToChannelMiddleware } from "./channel/files/utils";
 
 export interface LuloRoute {
   path: string;
@@ -34,15 +34,18 @@ const routes: LuloRoute[] = [
     type: "post",
     handler: uploadFileHandler,
     middlewares: [
-      uploadFileFieldsValidator,
       getMeMiddleWare, // add "me" object to req (AUTH)
+      userHasAccessToChannelMiddleware, //  Check if user has access to the current channel
       uploadMulterMiddleware, // upload the file
     ],
   },
   {
     path: "/channel/:channelId/get/file/:fileName",
     type: "get",
-    middlewares: [], // TODO: add validations to get files
+    middlewares: [
+      getMeMiddleWare, // Check if user is auth
+      userHasAccessToChannelMiddleware, // Check if user has access to the current channel
+    ],
     handler: getFileHandler,
   },
 ];

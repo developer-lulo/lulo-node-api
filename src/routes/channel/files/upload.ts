@@ -4,6 +4,7 @@ import fs from "fs";
 import util from "util";
 import { AfterGetMeMidRequest } from "../../../services/auth-service";
 import { getServerDomain } from "../../../services/server-service";
+import luloDatabase from "../../../models";
 
 interface CustomMulterParams {
   file?: {
@@ -46,25 +47,6 @@ const storage = diskStorage({
 export const uploadOnChannel = multer({
   storage,
 });
-
-export const uploadFileFieldsValidator = async (
-  req: AfterGetMeMidRequest & CustomMulterParams,
-  res: Response,
-  next: NextFunction
-) => {
-  let { channelId } = req.params;
-  console.log("uploadFileFieldsValidator");
-
-  // TODO: validate if the channel exists
-
-  if (!channelId) {
-    throw {
-      message: "'channelId field must be valid'",
-      code: 403,
-    };
-  }
-  next();
-};
 
 export const uploadMulterMiddleware = async (req, res, next) => {
   try {

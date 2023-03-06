@@ -15,7 +15,7 @@ import { ChannelMessage } from "./channel_message";
 import { UsersChannelsJunction } from "./users-channels-junction";
 import { v4 as uuidv4 } from "uuid";
 
-interface UserAttributes {
+export interface UserAttributes {
   id: string;
   displayName: string;
   email: string;

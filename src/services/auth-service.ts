@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import { JWT_SECRET } from "..";
 import { RequestContext } from "./apollo-service";
 import { ExpirationHandler, UnauthorizedError } from "express-jwt";
-import { User } from "../generated/gql-types";
+import { User, UserAttributes } from "../models/auth/user";
 
 export interface GenerateTokenProps {
   userId: string;
@@ -25,7 +25,7 @@ export interface AuthContext {
 const SALT_ROUNDS = 10;
 
 export interface AfterGetMeMidRequest extends RequestContext {
-  me: User;
+  me: UserAttributes;
 }
 
 export const getMeMiddleWare = async (
@@ -37,8 +37,6 @@ export const getMeMiddleWare = async (
     const user = await getMe(req);
     req.me = {
       ...user.dataValues,
-      createdAt: user.dataValues.createdAt.toISOString(),
-      updatedAt: user.dataValues.updatedAt.toISOString(),
     };
     next();
   } catch (error) {

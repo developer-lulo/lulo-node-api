@@ -1,6 +1,6 @@
 import express from "express";
 import { ExpressContext } from "apollo-server-express";
-import { User } from "../models/auth/user";
+import { User, UserAttributes } from "../models/auth/user";
 import { AuthContext, getMe } from "./auth-service";
 
 export const createContext = async (context: ExpressContext) => {
@@ -19,6 +19,6 @@ export const createContext = async (context: ExpressContext) => {
 export interface RequestContext extends express.Request, AuthContext {}
 
 export interface GraphQLContext {
-  me: User;
+  me: UserAttributes;
   req: RequestContext;
 }
