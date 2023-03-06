@@ -42,7 +42,7 @@ const routes: LuloRoute[] = [
   {
     path: "/channel/:channelId/get/file/:fileName",
     type: "get",
-    middlewares: [],
+    middlewares: [], // TODO: add validations to get files
     handler: getFileHandler,
   },
 ];
