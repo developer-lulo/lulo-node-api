@@ -8,9 +8,10 @@ import { Channel } from "./auth/channel";
 import { UsersChannelsJunction } from "./auth/users-channels-junction";
 import { ChannelMessage } from "./auth/channel_message";
 import { ChannelCharacter } from "./auth/channel_character";
+import { ENVIRONMENTS } from "../config/constants";
 
 dotenv.config();
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV || ENVIRONMENTS.DEVELOPMENT;
 const databaseConfig = databaseConnection[env];
 const sequelize = new Sequelize({
   ...databaseConfig,
