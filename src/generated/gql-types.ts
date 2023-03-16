@@ -48,6 +48,7 @@ export type MutationSignUpArgs = {
 export type Query = {
   __typename?: 'Query';
   channelCharacters?: Maybe<Array<Maybe<ChannelCharacter>>>;
+  me?: Maybe<User>;
   user?: Maybe<User>;
   userChannels?: Maybe<Array<Maybe<Channel>>>;
 };
@@ -205,6 +206,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   channelCharacters?: Resolver<Maybe<Array<Maybe<ResolversTypes['ChannelCharacter']>>>, ParentType, ContextType>;
+  me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>;
   userChannels?: Resolver<Maybe<Array<Maybe<ResolversTypes['Channel']>>>, ParentType, ContextType, RequireFields<QueryUserChannelsArgs, 'userId'>>;
 };
