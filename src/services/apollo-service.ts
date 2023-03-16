@@ -10,7 +10,7 @@ export const createContext = async (context: ExpressContext) => {
 
   return {
     req,
-    // me: await getMe(req),
+    me: await getMe(req),
   };
 };
 
