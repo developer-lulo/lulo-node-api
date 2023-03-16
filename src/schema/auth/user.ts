@@ -20,6 +20,7 @@ export default gql`
     avatar: String
     updatedAt: String
     createdAt: String
+    availableChannelCharacters: [ChannelCharacter]
   }
 
   type Token {

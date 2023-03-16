@@ -75,6 +75,7 @@ export type Token = {
 
 export type User = {
   __typename?: 'User';
+  availableChannelCharacters?: Maybe<Array<Maybe<ChannelCharacter>>>;
   avatar?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['String']>;
   displayName?: Maybe<Scalars['String']>;
@@ -215,6 +216,7 @@ export type TokenResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  availableChannelCharacters?: Resolver<Maybe<Array<Maybe<ResolversTypes['ChannelCharacter']>>>, ParentType, ContextType>;
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
