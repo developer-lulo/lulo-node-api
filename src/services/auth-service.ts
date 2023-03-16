@@ -36,7 +36,7 @@ export const getMeMiddleWare = async (
   try {
     const user = await getMe(req);
     req.me = {
-      ...user.dataValues,
+      ...user,
     };
     next();
   } catch (error) {
@@ -50,7 +50,7 @@ export const getMeMiddleWare = async (
 export const getMe = async (req: RequestContext) => {
   if (req.auth) {
     const { user } = req.auth;
-    return await luloDatabase.models.User.findByPk(user.id);
+    return (await luloDatabase.models.User.findByPk(user.id)).dataValues;
   } else {
     throw new AuthenticationError("Your session expired. Sign in again.");
   }

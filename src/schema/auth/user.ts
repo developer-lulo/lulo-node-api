@@ -3,13 +3,11 @@ import { gql } from "apollo-server-express";
 export default gql`
   type Query {
     user(userId: String!): User
-    # me: User
+    me: User
   }
 
-  type Mutation {
-    # login(email: String, password: String): String!
-    signUp(input: SignInput): Token
-  }
+  #type Mutation {
+  #}
 
 
   type User {
@@ -20,6 +18,7 @@ export default gql`
     avatar: String
     updatedAt: String
     createdAt: String
+    availableChannelCharacters: [ChannelCharacter]
   }
 
   type Token {
