@@ -1,3 +1,4 @@
+import { combineResolvers } from "graphql-resolvers";
 import { Resolvers } from "../generated/gql-types";
 
 // auth resolvers
@@ -6,11 +7,12 @@ import { userChannels, ChannelType } from "./auth/channel";
 
 // lulo resolvers
 import { channelCharacters } from "./lulo/channel-character";
+import { isAuthenticated } from "../services/auth-service";
 
 export const resolvers: Resolvers = {
   Query: {
     // auth queries
-    me,
+    me: combineResolvers(isAuthenticated, me),
     userChannels,
     // lulo queries
     channelCharacters,
