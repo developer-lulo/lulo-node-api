@@ -13,9 +13,8 @@ import {
 import { Channel } from "./channel";
 import { User } from "./user";
 import { v4 as uuidv4 } from "uuid";
+import { ChannelMessageStatus, ChannelMessageType } from "../../generated/gql-types";
 
-export type ChannelMessageType = "task";
-export type ChannelMessageStatus = "done" | "stored";
 
 interface ChannelMessageAttributes {
   id: string;
@@ -96,8 +95,8 @@ export class ChannelMessage
    */
 
   @BelongsTo(() => User, "userId")
-  user: User;
+  user: Awaited<User>;
 
   @BelongsTo(() => Channel, "channelId")
-  channel: Channel;
+  channel: Awaited<Channel>;
 }

@@ -16,6 +16,7 @@ import { ChannelCharacter } from "./channel_character";
 import { User } from "./user";
 import { UsersChannelsJunction } from "./users-channels-junction";
 import { v4 as uuidv4 } from "uuid";
+import { ChannelMessage } from "./channel_message";
 
 export const DEFAULT_CHANNEL_ON_CREATE_USER: ChannelAttributes = {
   id: uuidv4(),
@@ -83,4 +84,7 @@ export class Channel
 
   @BelongsTo(() => ChannelCharacter, "channelCharacterId")
   channelCharacter: ChannelCharacter;
+
+  @HasMany(() => ChannelMessage)
+  messages: ChannelMessage;
 }

@@ -88,6 +88,20 @@ export const cryptPassword = async (pass: string) => {
   return await bcrypt.hash(pass, SALT_ROUNDS);
 };
 
+export const hasChannelPermissions = async ({
+  userId,
+  channelId,
+}): Promise<boolean> => {
+  const hasPermissions =
+    await luloDatabase.models.UsersChannelsJunction.findOne({
+      where: {
+        userId,
+        channelId,
+      },
+    });
+  return !!hasPermissions;
+};
+
 // Resolvers to be used with CombineResolvers
 export const isAuthenticated = (_: any, __: any, { me }: GraphQLContext) =>
   me ? skip : new ForbiddenError("Not authenticated as user.");

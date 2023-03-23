@@ -35,22 +35,54 @@ export type ChannelCharacter = {
   updatedAt?: Maybe<Scalars['String']>;
 };
 
+export enum ChannelMessageStatus {
+  Done = 'DONE',
+  Pending = 'PENDING',
+  Stored = 'STORED'
+}
+
+export enum ChannelMessageType {
+  Task = 'TASK'
+}
+
+export type Message = {
+  __typename?: 'Message';
+  createdAt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  messageStatus?: Maybe<ChannelMessageStatus>;
+  messageType?: Maybe<ChannelMessageType>;
+  text?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  signUp?: Maybe<Token>;
+  sendMessageOnChannel?: Maybe<Scalars['String']>;
 };
 
 
-export type MutationSignUpArgs = {
-  input?: InputMaybe<SignInput>;
+export type MutationSendMessageOnChannelArgs = {
+  input?: InputMaybe<SendMessageInput>;
 };
 
 export type Query = {
   __typename?: 'Query';
   channelCharacters?: Maybe<Array<Maybe<ChannelCharacter>>>;
+  channelMessages?: Maybe<Array<Maybe<Message>>>;
+  channelUsers?: Maybe<Array<Maybe<User>>>;
   me?: Maybe<User>;
   user?: Maybe<User>;
   userChannels?: Maybe<Array<Maybe<Channel>>>;
+};
+
+
+export type QueryChannelMessagesArgs = {
+  channelId: Scalars['String'];
+};
+
+
+export type QueryChannelUsersArgs = {
+  channelId: Scalars['String'];
 };
 
 
@@ -61,6 +93,11 @@ export type QueryUserArgs = {
 
 export type QueryUserChannelsArgs = {
   userId: Scalars['String'];
+};
+
+export type SendMessageInput = {
+  channelId: Scalars['String'];
+  text: Scalars['String'];
 };
 
 export type SignInput = {
@@ -158,8 +195,12 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelCharacter: ResolverTypeWrapper<ChannelCharacter>;
+  ChannelMessageStatus: ChannelMessageStatus;
+  ChannelMessageType: ChannelMessageType;
+  Message: ResolverTypeWrapper<Message>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  SendMessageInput: SendMessageInput;
   SignInput: SignInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Token: ResolverTypeWrapper<Token>;
@@ -171,8 +212,10 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Channel: Channel;
   ChannelCharacter: ChannelCharacter;
+  Message: Message;
   Mutation: {};
   Query: {};
+  SendMessageInput: SendMessageInput;
   SignInput: SignInput;
   String: Scalars['String'];
   Token: Token;
@@ -200,12 +243,24 @@ export type ChannelCharacterResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  messageStatus?: Resolver<Maybe<ResolversTypes['ChannelMessageStatus']>, ParentType, ContextType>;
+  messageType?: Resolver<Maybe<ResolversTypes['ChannelMessageType']>, ParentType, ContextType>;
+  text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  signUp?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, Partial<MutationSignUpArgs>>;
+  sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   channelCharacters?: Resolver<Maybe<Array<Maybe<ResolversTypes['ChannelCharacter']>>>, ParentType, ContextType>;
+  channelMessages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType, RequireFields<QueryChannelMessagesArgs, 'channelId'>>;
+  channelUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QueryChannelUsersArgs, 'channelId'>>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>;
   userChannels?: Resolver<Maybe<Array<Maybe<ResolversTypes['Channel']>>>, ParentType, ContextType, RequireFields<QueryUserChannelsArgs, 'userId'>>;
@@ -232,6 +287,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = {
   Channel?: ChannelResolvers<ContextType>;
   ChannelCharacter?: ChannelCharacterResolvers<ContextType>;
+  Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;

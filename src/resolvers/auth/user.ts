@@ -1,6 +1,5 @@
 import {
   ChannelResolvers,
-  MutationSignUpArgs,
   QueryUserArgs,
   Resolver,
   ResolverTypeWrapper,

@@ -3,6 +3,7 @@ import { gql } from "apollo-server-express";
 export default gql`
   type Query {
     userChannels(userId: String!): [Channel]
+    channelUsers(channelId: String!): [User]
   }
 
   #   type Mutation {
