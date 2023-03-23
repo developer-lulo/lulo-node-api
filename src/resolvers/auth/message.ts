@@ -54,7 +54,6 @@ export const sendMessageOnChannel: Resolver<
   const channelExists = await luloDatabase.models.Channel.findByPk(
     args.input.channelId
   );
-  console.log(channelExists);
   if (!channelExists) {
     throw new ForbiddenError(
       `Sorry but the channel with channelId:${args.input.channelId} doesnt exist`
