@@ -4,7 +4,7 @@ import luloDatabase from "../models";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { JWT_SECRET } from "..";
-import { RequestContext } from "./apollo-service";
+import { GraphQLContext, RequestContext } from "./apollo-service";
 import { ExpirationHandler, UnauthorizedError } from "express-jwt";
 import { User, UserAttributes } from "../models/auth/user";
 import { skip } from "graphql-resolvers";
@@ -89,5 +89,5 @@ export const cryptPassword = async (pass: string) => {
 };
 
 // Resolvers to be used with CombineResolvers
-export const isAuthenticated = (_: any, __: any, { me }: any) =>
+export const isAuthenticated = (_: any, __: any, { me }: GraphQLContext) =>
   me ? skip : new ForbiddenError("Not authenticated as user.");
