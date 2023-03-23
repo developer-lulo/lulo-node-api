@@ -1,13 +1,13 @@
 import express, { Response, Request, NextFunction } from "express";
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError, ForbiddenError } from "apollo-server-express";
 import luloDatabase from "../models";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { JWT_SECRET } from "..";
-import { RequestContext } from "./apollo-service";
+import { GraphQLContext, RequestContext } from "./apollo-service";
 import { ExpirationHandler, UnauthorizedError } from "express-jwt";
 import { User, UserAttributes } from "../models/auth/user";
-
+import { skip } from "graphql-resolvers";
 export interface GenerateTokenProps {
   userId: string;
 }
@@ -19,7 +19,7 @@ export interface TokenSign {
 }
 
 export interface AuthContext {
-  auth: TokenSign;
+  auth?: TokenSign;
 }
 
 const SALT_ROUNDS = 10;
@@ -35,9 +35,15 @@ export const getMeMiddleWare = async (
 ) => {
   try {
     const user = await getMe(req);
-    req.me = {
-      ...user,
-    };
+
+    if (!user) {
+      throw Error(`User is not authenticated, please sign in`);
+    }
+
+    if (user.avatar)
+      req.me = {
+        ...user,
+      };
     next();
   } catch (error) {
     throw {
@@ -47,12 +53,14 @@ export const getMeMiddleWare = async (
   }
 };
 
-export const getMe = async (req: RequestContext) => {
+export const getMe = async (
+  req: RequestContext
+): Promise<UserAttributes | undefined> => {
   if (req.auth) {
     const { user } = req.auth;
     return (await luloDatabase.models.User.findByPk(user.id)).dataValues;
   } else {
-    throw new AuthenticationError("Your session expired. Sign in again.");
+    return undefined;
   }
 };
 
@@ -79,3 +87,7 @@ export const validatePassword = async (pass: {
 export const cryptPassword = async (pass: string) => {
   return await bcrypt.hash(pass, SALT_ROUNDS);
 };
+
+// Resolvers to be used with CombineResolvers
+export const isAuthenticated = (_: any, __: any, { me }: GraphQLContext) =>
+  me ? skip : new ForbiddenError("Not authenticated as user.");
