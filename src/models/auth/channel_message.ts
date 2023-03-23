@@ -86,6 +86,15 @@ export class ChannelMessage
   // relations
   // Check this: https://www.npmjs.com/package/sequelize-typescript#type-inference:~:text=sequelize%2Dtypescript%20cannot%20know%20which%20foreign%20key%20to%20use%20for%20which%20relation.%20So%20you%20have%20to%20add%20the%20foreign%20keys%20explicitly%3A
 
+  /**
+   * cannot access before initialization. 
+   * 
+   * public usersBid: ReturnType<() => AuctionBid>;
+   * public usersBid: Awaited<AuctionBid>;
+   * 
+   * https://github.com/sequelize/sequelize-typescript/issues/825
+   */
+
   @BelongsTo(() => User, "userId")
   user: User;
 
