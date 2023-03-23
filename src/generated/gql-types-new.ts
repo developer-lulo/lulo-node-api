@@ -57,7 +57,7 @@ export type Message = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  sendMessageOnChannel?: Maybe<Scalars['String']>;
+  sendMessageOnChannel?: Maybe<Message>;
 };
 
 
@@ -254,7 +254,7 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
+  sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

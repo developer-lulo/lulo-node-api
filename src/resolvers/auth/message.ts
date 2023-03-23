@@ -41,7 +41,7 @@ export const channelMessages: Resolver<
 };
 
 export const sendMessageOnChannel: Resolver<
-  ResolverTypeWrapper<string>,
+  ResolverTypeWrapper<Message>,
   {},
   any,
   Partial<MutationSendMessageOnChannelArgs>
@@ -79,5 +79,9 @@ export const sendMessageOnChannel: Resolver<
     userId: context.me.id,
   });
 
-  return "ok";
+  return {
+    ...message.dataValues,
+    createdAt: message.createdAt.toISOString(),
+    updatedAt: message.updatedAt.toISOString(),
+  };
 };

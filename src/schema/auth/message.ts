@@ -6,7 +6,7 @@ export default gql`
   }
 
   type Mutation {
-    sendMessageOnChannel(input: SendMessageInput): String
+    sendMessageOnChannel(input: SendMessageInput): Message
   }
 
   enum ChannelMessageType {
