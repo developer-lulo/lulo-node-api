@@ -1,7 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { Options } from "sequelize";
 
 // Declare all different environments
-export type environments = { development: "Local Development" };
+export type environments = {
+  development: "Local Development";
+  staging: "AWS enviroment";
+};
 
 // Based type to force the creating of config objects
 export type DBConfig = {
@@ -25,8 +30,25 @@ export const config: DBConfig = {
       max: 10,
     },
   },
+  staging: {
+    username: "root",
+    password: process.env.LULO_DB_PASS,
+    database: "lulo",
+    host: process.env.LULO_DB_HOST,
+    dialect: "mysql",
+    logging: false,
+    logQueryParameters: false,
+    dialectOptions: {
+      decimalNumbers: true,
+    },
+    pool: {
+      max: 10,
+    },
+  },
 };
 
 //@ts-ignore Required for Sequelize migrations interop
 export = config;
+
+
 
