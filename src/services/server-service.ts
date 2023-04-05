@@ -7,7 +7,7 @@ export const getServerDomain = () => {
   if (environment === ENVIRONMENTS.DEVELOPMENT) {
     return "http://localhost:9000";
   }
-  if (environment === ENVIRONMENTS.PRODUCTION) {
-    return process.env.PROD_DOMAIN || "https://api.lulo.love";
+  if (environment === ENVIRONMENTS.STAGING) {
+    return process.env.PROD_DOMAIN || "https://api.lulo.services";
   }
 };

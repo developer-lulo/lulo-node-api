@@ -19,3 +19,11 @@ NOTE: maybe is needed to delete the src/generated folder.
 - npx sequelize-cli model:generate --name User --attributes id:string
 - change the extension file to ts
 - update the model inside
+
+
+# Using scripts from package.json 
+
+- dev: compile and run as production just to dev locally
+- build: compile the code, used to build the final package to prod
+- build:to:bundle: creates a bundle from the app, excluding  the node_modules, so in the end you need to provide the needed packages to run correctly in the node runtime
+- build:to:zip: copy the package.json to the dist folder and creates a zip with it content, to be uploaded on Elastic Beanstalk 
