@@ -3,6 +3,8 @@ import { getMeMiddleWare } from "../services/auth-service";
 import { handler as SigInHandler } from "./auth/signin";
 import { handler as SignUpHandler } from "./auth/signup";
 
+import packageJson from "../../package.json";
+
 import {
   handler as uploadFileHandler,
   uploadMulterMiddleware,
@@ -19,6 +21,16 @@ export interface LuloRoute {
 }
 
 const routes: LuloRoute[] = [
+  {
+    path: "/",
+    type: "get",
+    handler: (req, res) => {
+      return {
+        name: packageJson.name,
+        version: packageJson.version,
+      };
+    },
+  },
   {
     path: "/auth/signin",
     type: "post",

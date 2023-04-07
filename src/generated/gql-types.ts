@@ -105,6 +105,17 @@ export type SignInput = {
   password: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  checkSubscriptionService?: Maybe<Scalars['String']>;
+  messageCreatedOnChannel?: Maybe<Message>;
+};
+
+
+export type SubscriptionMessageCreatedOnChannelArgs = {
+  channelId: Scalars['String'];
+};
+
 export type Token = {
   __typename?: 'Token';
   token: Scalars['String'];
@@ -203,6 +214,7 @@ export type ResolversTypes = {
   SendMessageInput: SendMessageInput;
   SignInput: SignInput;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Subscription: ResolverTypeWrapper<{}>;
   Token: ResolverTypeWrapper<Token>;
   User: ResolverTypeWrapper<User>;
 };
@@ -218,6 +230,7 @@ export type ResolversParentTypes = {
   SendMessageInput: SendMessageInput;
   SignInput: SignInput;
   String: Scalars['String'];
+  Subscription: {};
   Token: Token;
   User: User;
 };
@@ -266,6 +279,11 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   userChannels?: Resolver<Maybe<Array<Maybe<ResolversTypes['Channel']>>>, ParentType, ContextType, RequireFields<QueryUserChannelsArgs, 'userId'>>;
 };
 
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  checkSubscriptionService?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "checkSubscriptionService", ParentType, ContextType>;
+  messageCreatedOnChannel?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageCreatedOnChannel", ParentType, ContextType, RequireFields<SubscriptionMessageCreatedOnChannelArgs, 'channelId'>>;
+};
+
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
@@ -290,6 +308,7 @@ export type Resolvers<ContextType = any> = {
   Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

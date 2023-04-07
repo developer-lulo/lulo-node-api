@@ -11,7 +11,11 @@ import {
   hasChannelPermissions,
   isAuthenticated,
 } from "../services/auth-service";
-import { channelMessages, sendMessageOnChannel } from "./auth/message";
+import {
+  channelMessages,
+  sendMessageOnChannel,
+  messageCreatedOnChannel,
+} from "./auth/message";
 
 export const resolvers: Resolvers = {
   Query: {
@@ -30,6 +34,18 @@ export const resolvers: Resolvers = {
       sendMessageOnChannel
     ),
     // lulo mutations
+  },
+  Subscription: {
+    checkSubscriptionService: {
+      // Example using an async generator
+      subscribe: async function* () {
+        for await (const word of ["Hey There!", "It`s working well", "Ciao"]) {
+          yield { checkSubscriptionService: word };
+        }
+      },
+    },
+
+    messageCreatedOnChannel,
   },
 
   // auth types
