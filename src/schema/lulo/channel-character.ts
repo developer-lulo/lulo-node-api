@@ -9,6 +9,10 @@ export default gql`
   #     # sendMessage(input:SendMessageInput): String
   #   }
 
+  type Subscription {
+    checkSubscriptionService: String
+  }
+
   type ChannelCharacter {
     id: String!
     displayName: String!

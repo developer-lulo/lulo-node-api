@@ -8,12 +8,16 @@ import {
   RequireFields,
   Resolver,
   ResolverTypeWrapper,
+  SubscriptionMessageCreatedOnChannelArgs,
+  SubscriptionResolver,
 } from "../../generated/gql-types";
+import { withFilter } from "graphql-subscriptions";
 import luloDatabase from "../../models";
 import { GraphQLContext } from "../../services/apollo-service";
 import { v4 as uuidv4 } from "uuid";
 import { hasChannelPermissions } from "../../services/auth-service";
 import { ForbiddenError } from "apollo-server-express";
+import { pubsub } from "../../services/subscriptions-service";
 
 export const channelMessages: Resolver<
   ResolverTypeWrapper<Message>[],
@@ -79,9 +83,44 @@ export const sendMessageOnChannel: Resolver<
     userId: context.me.id,
   });
 
-  return {
+  const messageCreated = {
     ...message.dataValues,
     createdAt: message.createdAt.toISOString(),
     updatedAt: message.updatedAt.toISOString(),
   };
+
+  const publishPayload: MessageCreatedOnChannelObject = {
+    channelId: args.input.channelId,
+    messageCreated,
+  };
+  pubsub.publish("MESSAGE_CREATED_ON_CHANNEL", publishPayload);
+
+  return messageCreated;
 };
+
+export const messageCreatedOnChannel: SubscriptionResolver<
+  ResolverTypeWrapper<Message>,
+  "messageCreatedOnChannel",
+  {},
+  any,
+  RequireFields<SubscriptionMessageCreatedOnChannelArgs, "channelId">
+> = {
+  subscribe: withFilter(
+    () => pubsub.asyncIterator("MESSAGE_CREATED_ON_CHANNEL"),
+    async (
+      messageObject: MessageCreatedOnChannelObject,
+      args: RequireFields<SubscriptionMessageCreatedOnChannelArgs, "channelId">,
+      context
+    ) => {
+      return messageObject.channelId === args.channelId;
+    }
+  ) as any,
+  resolve: (messageObject: MessageCreatedOnChannelObject, args, context) => {
+    return messageObject.messageCreated;
+  },
+};
+
+export interface MessageCreatedOnChannelObject {
+  channelId: string;
+  messageCreated: Message;
+}

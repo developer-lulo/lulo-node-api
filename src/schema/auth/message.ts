@@ -9,6 +9,10 @@ export default gql`
     sendMessageOnChannel(input: SendMessageInput): Message
   }
 
+  type Subscription {
+    messageCreatedOnChannel(channelId:String!): Message
+  }
+
   enum ChannelMessageType {
     TASK
   }

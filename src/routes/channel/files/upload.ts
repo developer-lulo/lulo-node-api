@@ -3,8 +3,8 @@ import multer, { diskStorage } from "multer";
 import fs from "fs";
 import util from "util";
 import { AfterGetMeMidRequest } from "../../../services/auth-service";
-import { getServerDomain } from "../../../services/server-service";
 import luloDatabase from "../../../models";
+import { PROD_DOMAIN } from "../../../config/constants";
 
 interface CustomMulterParams {
   file?: {
@@ -65,7 +65,7 @@ export const handler = (
   req: AfterGetMeMidRequest & CustomMulterParams,
   res: Response
 ) => {
-  const domain = getServerDomain();
+  const domain = PROD_DOMAIN;
   const { channelId } = req.params;
   const fileName = req.file.filename;
 
