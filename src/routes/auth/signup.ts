@@ -1,6 +1,5 @@
 import { Express, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../..";
 import luloDatabase from "../../models";
 import { v4 as uuidv4 } from "uuid";
 import { cryptPassword, generateToken } from "../../services/auth-service";

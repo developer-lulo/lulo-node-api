@@ -1,11 +1,9 @@
 import { RedisPubSub } from "graphql-redis-subscriptions";
-
-
-const isProduction = process.env.NODE_ENV === "production";
+import { REDIS_HOST, REDIS_PORT } from "../config/constants";
 
 const connection = {
-  host: isProduction ? process.env.REDISHOST : "localhost",
-  port: isProduction ? process.env.REDISPORT : 6379,
+  host: REDIS_HOST,
+  port: REDIS_PORT,
   retryStrategy: (times: any) => {
     // reconnect after
     return Math.min(times * 50, 2000);

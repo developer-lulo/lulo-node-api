@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { Options } from "sequelize";
+import { Dialect, Options } from "sequelize";
+import { LULO_DB_HOST, LULO_DB_PASS } from "./constants";
 
 // Declare all different environments
 export type environments = {
@@ -14,41 +15,31 @@ export type DBConfig = {
 };
 
 // db config objects
+
+const connectionObject = {
+  username: "root",
+  password: LULO_DB_PASS,
+  database: "lulo",
+  host: LULO_DB_HOST,
+  dialect: "mysql" as Dialect,
+  logging: false,
+  logQueryParameters: false,
+  dialectOptions: {
+    decimalNumbers: true,
+  },
+  pool: {
+    max: 10,
+  },
+};
+
 export const config: DBConfig = {
   development: {
-    username: "root",
-    password: "1qaz2wsx",
-    database: "lulo",
-    host: "127.0.0.1",
-    dialect: "mysql",
-    logging: false,
-    logQueryParameters: false,
-    dialectOptions: {
-      decimalNumbers: true,
-    },
-    pool: {
-      max: 10,
-    },
+    ...connectionObject,
   },
   staging: {
-    username: "root",
-    password: process.env.LULO_DB_PASS,
-    database: "lulo",
-    host: process.env.LULO_DB_HOST,
-    dialect: "mysql",
-    logging: false,
-    logQueryParameters: false,
-    dialectOptions: {
-      decimalNumbers: true,
-    },
-    pool: {
-      max: 10,
-    },
+    ...connectionObject,
   },
 };
 
 //@ts-ignore Required for Sequelize migrations interop
 export = config;
-
-
-

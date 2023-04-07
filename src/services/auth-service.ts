@@ -3,11 +3,11 @@ import { AuthenticationError, ForbiddenError } from "apollo-server-express";
 import luloDatabase from "../models";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { JWT_SECRET } from "..";
 import { GraphQLContext, RequestContext } from "./apollo-service";
 import { ExpirationHandler, UnauthorizedError } from "express-jwt";
 import { User, UserAttributes } from "../models/auth/user";
 import { skip } from "graphql-resolvers";
+import { JWT_SECRET } from "../config/constants";
 export interface GenerateTokenProps {
   userId: string;
 }

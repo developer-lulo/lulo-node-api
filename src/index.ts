@@ -11,17 +11,13 @@ import { expressjwt } from "express-jwt";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
-// Constants and env vars
-export const APP_PORT = process.env.APP_PORT || 9000;
-export const JWT_SECRET = process.env.JWT_SECRET;
-const SERVER_PATH = "/graphql";
-
 import schema from "./schema";
 import resolvers from "./resolvers";
 import { loadRoutes } from "./routes";
 
 import luloDatabase from "./models";
 import { createContext, GraphQLContext } from "./services/apollo-service";
+import { APP_PORT, JWT_SECRET, SERVER_PATH } from "./config/constants";
 
 const app = express();
 
