@@ -32,7 +32,6 @@ const connectionObject = {
     max: 10,
   },
 };
-console.log(connectionObject);
 
 export const config: DBConfig = {
   development: {
