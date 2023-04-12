@@ -7,6 +7,7 @@ import { LULO_DB_HOST, LULO_DB_PASS } from "./constants";
 export type environments = {
   development: "Local Development";
   staging: "AWS enviroment";
+  production: "AWS environment for production";
 };
 
 // Based type to force the creating of config objects
@@ -31,12 +32,16 @@ const connectionObject = {
     max: 10,
   },
 };
+console.log(connectionObject);
 
 export const config: DBConfig = {
   development: {
     ...connectionObject,
   },
   staging: {
+    ...connectionObject,
+  },
+  production: {
     ...connectionObject,
   },
 };
