@@ -27,3 +27,11 @@ NOTE: maybe is needed to delete the src/generated folder.
 - build: compile the code, used to build the final package to prod
 - build:to:bundle: creates a bundle from the app, excluding  the node_modules, so in the end you need to provide the needed packages to run correctly in the node runtime
 - build:to:zip: copy the package.json to the dist folder and creates a zip with it content, to be uploaded on Elastic Beanstalk 
+
+
+# Running on Production 
+
+to start the service using PM2 by running a package.json script 
+```
+pm2 start npm --name "lulo-node-api" -- start
+```
