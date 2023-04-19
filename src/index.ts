@@ -24,6 +24,11 @@ const app = express();
 app.use(
   cors(),
   express.json(),
+  // for debug requests
+  (req, res, next) => {
+    // console.log(req.headers);
+    next();
+  },
   expressjwt({
     algorithms: ["HS256"],
     credentialsRequired: false,
@@ -78,7 +83,7 @@ await server.start();
 
 app.use(
   SERVER_PATH,
-  cors<cors.CorsRequest>(),
+  cors<cors.CorsRequest>({}),
   expressMiddleware(server, {
     context: createContext,
   })

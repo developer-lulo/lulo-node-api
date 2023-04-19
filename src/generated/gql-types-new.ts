@@ -14,6 +14,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type ChangeMessageStatusInput = {
+  messageId: Scalars['String'];
+  messageStatus?: InputMaybe<ChannelMessageStatus>;
+};
+
 export type Channel = {
   __typename?: 'Channel';
   channelCharacter?: Maybe<ChannelCharacter>;
@@ -45,6 +50,13 @@ export enum ChannelMessageType {
   Task = 'TASK'
 }
 
+export type CreateChannelInput = {
+  channelCharacterId: Scalars['String'];
+  displayName: Scalars['String'];
+  imageUrl: Scalars['String'];
+  userChannelsIds: Array<InputMaybe<Scalars['String']>>;
+};
+
 export type Message = {
   __typename?: 'Message';
   createdAt?: Maybe<Scalars['String']>;
@@ -57,7 +69,19 @@ export type Message = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changeMessageStatus?: Maybe<Message>;
+  createChannel?: Maybe<Channel>;
   sendMessageOnChannel?: Maybe<Message>;
+};
+
+
+export type MutationChangeMessageStatusArgs = {
+  input?: InputMaybe<ChangeMessageStatusInput>;
+};
+
+
+export type MutationCreateChannelArgs = {
+  input?: InputMaybe<CreateChannelInput>;
 };
 
 
@@ -204,10 +228,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ChangeMessageStatusInput: ChangeMessageStatusInput;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelCharacter: ResolverTypeWrapper<ChannelCharacter>;
   ChannelMessageStatus: ChannelMessageStatus;
   ChannelMessageType: ChannelMessageType;
+  CreateChannelInput: CreateChannelInput;
   Message: ResolverTypeWrapper<Message>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -222,8 +248,10 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  ChangeMessageStatusInput: ChangeMessageStatusInput;
   Channel: Channel;
   ChannelCharacter: ChannelCharacter;
+  CreateChannelInput: CreateChannelInput;
   Message: Message;
   Mutation: {};
   Query: {};
@@ -267,6 +295,8 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  changeMessageStatus?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationChangeMessageStatusArgs>>;
+  createChannel?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, Partial<MutationCreateChannelArgs>>;
   sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
 };
 

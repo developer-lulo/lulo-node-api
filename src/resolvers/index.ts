@@ -3,7 +3,12 @@ import { Resolvers } from "../generated/gql-types";
 
 // auth resolvers
 import { UserType, me } from "./auth/user";
-import { userChannels, ChannelType, channelUsers } from "./auth/channel";
+import {
+  userChannels,
+  ChannelType,
+  channelUsers,
+  createChannel,
+} from "./auth/channel";
 
 // lulo resolvers
 import { channelCharacters } from "./lulo/channel-character";
@@ -15,6 +20,7 @@ import {
   channelMessages,
   sendMessageOnChannel,
   messageCreatedOnChannel,
+  changeMessageStatus,
 } from "./auth/message";
 
 export const resolvers: Resolvers = {
@@ -33,6 +39,9 @@ export const resolvers: Resolvers = {
       isAuthenticated,
       sendMessageOnChannel
     ),
+    changeMessageStatus: combineResolvers(isAuthenticated, changeMessageStatus),
+
+    createChannel: combineResolvers(isAuthenticated, createChannel),
     // lulo mutations
   },
   Subscription: {

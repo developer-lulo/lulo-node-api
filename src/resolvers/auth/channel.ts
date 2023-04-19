@@ -8,9 +8,15 @@ import {
   ChannelResolvers,
   User,
   QueryChannelUsersArgs,
+  MutationCreateChannelArgs,
 } from "../../generated/gql-types";
 import luloDatabase from "../../models";
 import { GraphQLContext } from "../../services/apollo-service";
+import { v4 as uuidv4 } from "uuid";
+import {
+  UsersChannelsJunction,
+  UsersChannelsJunctionAttributes,
+} from "../../models/auth/users-channels-junction";
 
 export const userChannels: Resolver<
   ResolverTypeWrapper<Channel>[],
@@ -86,6 +92,54 @@ export const channelUsers: Resolver<
       };
     });
   });
+};
+
+export const createChannel: Resolver<
+  ResolverTypeWrapper<Channel>,
+  {},
+  any,
+  Partial<MutationCreateChannelArgs>
+> = async (
+  parent: any,
+  args: MutationCreateChannelArgs,
+  context: GraphQLContext
+) => {
+  const channelCreated = await luloDatabase.sequelize.transaction(
+    async (transaction) => {
+      const newChannel = await luloDatabase.models.Channel.create(
+        {
+          id: uuidv4(),
+          channelCharacterId: args.input.channelCharacterId,
+          displayName: args.input.displayName,
+          imageUrl: args.input.imageUrl,
+        },
+        { transaction }
+      );
+
+      // create juntions
+
+      // TODO: validate if the users in the array exists
+      const junctions = args.input.userChannelsIds.map((userId) => {
+        return {
+          id: uuidv4(),
+          channelId: newChannel.id,
+          userId: userId,
+        } as UsersChannelsJunctionAttributes;
+      });
+
+      await luloDatabase.models.UsersChannelsJunction.bulkCreate(junctions, {
+        transaction,
+      });
+
+      return newChannel;
+    }
+  );
+
+  return {
+    ...channelCreated.dataValues,
+    updatedAt: channelCreated.updatedAt.toISOString(),
+    createdAt: channelCreated.createdAt.toISOString(),
+  };
 };
 
 // type

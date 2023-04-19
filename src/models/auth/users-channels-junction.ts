@@ -13,7 +13,7 @@ import { Channel } from "./channel";
 import { User } from "./user";
 import { v4 as uuidv4 } from "uuid";
 
-interface UsersChannelsJunctionAttributes {
+export interface UsersChannelsJunctionAttributes {
   id: string;
   channelId: string;
   userId: string;

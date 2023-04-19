@@ -7,10 +7,11 @@ export default gql`
 
   type Mutation {
     sendMessageOnChannel(input: SendMessageInput): Message
+    changeMessageStatus(input: ChangeMessageStatusInput): Message
   }
 
   type Subscription {
-    messageCreatedOnChannel(channelId:String!): Message
+    messageCreatedOnChannel(channelId: String!): Message
   }
 
   enum ChannelMessageType {
@@ -39,5 +40,10 @@ export default gql`
   input SendMessageInput {
     text: String!
     channelId: String!
+  }
+
+  input ChangeMessageStatusInput {
+    messageId: String!
+    messageStatus: ChannelMessageStatus
   }
 `;

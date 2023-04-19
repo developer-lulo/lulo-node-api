@@ -6,9 +6,9 @@ export default gql`
     channelUsers(channelId: String!): [User]
   }
 
-  #   type Mutation {
-  #     # sendMessage(input:SendMessageInput): String
-  #   }
+  type Mutation {
+    createChannel(input: CreateChannelInput): Channel
+  }
 
   type Channel {
     id: String!
@@ -20,8 +20,10 @@ export default gql`
     channelCharacter: ChannelCharacter
   }
 
-  #   input SendMessageInput {
-  #     text: String!
-  #     channelId: String!
-  #   }
+  input CreateChannelInput {
+    channelCharacterId: String!
+    displayName: String!
+    imageUrl: String!
+    userChannelsIds: [String]!
+  }
 `;

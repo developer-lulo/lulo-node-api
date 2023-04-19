@@ -3,6 +3,7 @@ import {
   ChannelMessageStatus,
   ChannelMessageType,
   Message,
+  MutationChangeMessageStatusArgs,
   MutationSendMessageOnChannelArgs,
   QueryChannelMessagesArgs,
   RequireFields,
@@ -124,3 +125,30 @@ export interface MessageCreatedOnChannelObject {
   channelId: string;
   messageCreated: Message;
 }
+
+export const changeMessageStatus: Resolver<
+  ResolverTypeWrapper<Message>,
+  {},
+  any,
+  Partial<MutationChangeMessageStatusArgs>
+> = async (
+  parent: any,
+  args: Partial<MutationChangeMessageStatusArgs>,
+  context: GraphQLContext
+) => {
+  const message = await luloDatabase.models.ChannelMessage.findByPk(
+    args.input.messageId
+  );
+
+  await message.update({
+    messageStatus: args.input.messageStatus,
+  });
+
+  const updatedMessage = await message.reload();
+
+  return {
+    ...updatedMessage.dataValues,
+    updatedAt: updatedMessage.updatedAt.toISOString(),
+    createdAt: updatedMessage.createdAt.toISOString(),
+  };
+};
