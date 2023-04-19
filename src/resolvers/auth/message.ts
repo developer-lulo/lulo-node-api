@@ -36,13 +36,15 @@ export const channelMessages: Resolver<
     },
   });
 
-  return messages.map((m) => {
-    return {
-      ...m.dataValues,
-      createdAt: m.dataValues.createdAt.toISOString(),
-      updatedAt: m.dataValues.updatedAt.toISOString(),
-    };
-  });
+  return messages
+    .filter((m) => m.messageStatus !== ChannelMessageStatus.Stored)
+    .map((m) => {
+      return {
+        ...m.dataValues,
+        createdAt: m.dataValues.createdAt.toISOString(),
+        updatedAt: m.dataValues.updatedAt.toISOString(),
+      };
+    });
 };
 
 export const sendMessageOnChannel: Resolver<
