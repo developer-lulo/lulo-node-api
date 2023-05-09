@@ -34,4 +34,10 @@ NOTE: maybe is needed to delete the src/generated folder.
 to start the service using PM2 by running a package.json script 
 ```
 pm2 start npm --name "lulo-node-api" -- start
+
+pm2 stop lulo-node-api
+
+pm2 start lulo-node-api
+
+pm2 restart lulo-node-api
 ```

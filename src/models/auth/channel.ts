@@ -21,7 +21,7 @@ import { ChannelMessage } from "./channel_message";
 export const DEFAULT_CHANNEL_ON_CREATE_USER: ChannelAttributes = {
   id: uuidv4(),
   channelCharacterId: "14d0e85d-4374-4932-80a8-b72b9390fb3d",
-  displayName: "Un paso a la vez",
+  displayName: "Tareitas por hacer",
   imageUrl: undefined,
   createdAt: undefined,
   updatedAt: undefined,
