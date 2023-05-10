@@ -53,6 +53,7 @@ export const handler = async (req: Request, res: Response) => {
       const newUserFirstChannel = await luloDatabase.models.Channel.create(
         {
           ...DEFAULT_CHANNEL_ON_CREATE_USER,
+          id: uuidv4(),
         },
         { transaction }
       );
