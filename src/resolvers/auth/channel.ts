@@ -9,6 +9,8 @@ import {
   User,
   QueryChannelUsersArgs,
   MutationCreateChannelArgs,
+  ChannelStatus,
+  MutationChangeChannelStatusArgs,
 } from "../../generated/gql-types";
 import luloDatabase from "../../models";
 import { GraphQLContext } from "../../services/apollo-service";
@@ -48,6 +50,7 @@ export const userChannels: Resolver<
   return userChannelRecords.map((chR) => {
     return {
       ...chR.dataValues,
+      channelStatus: chR.dataValues.channelStatus as ChannelStatus,
       updatedAt: chR.updatedAt.toISOString(),
       createdAt: chR.updatedAt.toISOString(),
     };
@@ -111,6 +114,7 @@ export const createChannel: Resolver<
           id: uuidv4(),
           channelCharacterId: args.input.channelCharacterId,
           displayName: args.input.displayName,
+          channelStatus: ChannelStatus.Inuse,
           imageUrl: args.input.imageUrl,
         },
         { transaction }
@@ -137,8 +141,37 @@ export const createChannel: Resolver<
 
   return {
     ...channelCreated.dataValues,
+    channelStatus: channelCreated.dataValues.channelStatus as ChannelStatus,
     updatedAt: channelCreated.updatedAt.toISOString(),
     createdAt: channelCreated.createdAt.toISOString(),
+  };
+};
+
+export const changeChannelStatus: Resolver<
+  ResolverTypeWrapper<Channel>,
+  {},
+  any,
+  Partial<MutationChangeChannelStatusArgs>
+> = async (
+  parent: any,
+  args: Partial<MutationChangeChannelStatusArgs>,
+  context: GraphQLContext
+) => {
+  const channel = await luloDatabase.models.Channel.findByPk(
+    args.input.channelId
+  );
+
+  await channel.update({
+    channelStatus: args.input.channelStatus,
+  });
+
+  const updatedChannel = await channel.reload();
+
+  return {
+    ...updatedChannel.dataValues,
+    channelStatus: updatedChannel.dataValues.channelStatus as ChannelStatus,
+    updatedAt: updatedChannel.updatedAt.toISOString(),
+    createdAt: updatedChannel.createdAt.toISOString(),
   };
 };
 
