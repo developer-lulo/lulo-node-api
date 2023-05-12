@@ -8,6 +8,7 @@ import {
   ChannelType,
   channelUsers,
   createChannel,
+  changeChannelStatus,
 } from "./auth/channel";
 
 // lulo resolvers
@@ -40,8 +41,8 @@ export const resolvers: Resolvers = {
       sendMessageOnChannel
     ),
     changeMessageStatus: combineResolvers(isAuthenticated, changeMessageStatus),
-
     createChannel: combineResolvers(isAuthenticated, createChannel),
+    changeChannelStatus: combineResolvers(isAuthenticated, changeChannelStatus),
     // lulo mutations
   },
   Subscription: {

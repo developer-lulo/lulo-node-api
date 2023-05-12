@@ -17,11 +17,13 @@ import { User } from "./user";
 import { UsersChannelsJunction } from "./users-channels-junction";
 import { v4 as uuidv4 } from "uuid";
 import { ChannelMessage } from "./channel_message";
+import { ChannelStatus } from "../../generated/gql-types";
 
 export const DEFAULT_CHANNEL_ON_CREATE_USER: ChannelAttributes = {
   id: uuidv4(),
   channelCharacterId: "14d0e85d-4374-4932-80a8-b72b9390fb3d",
   displayName: "Tareitas por hacer",
+  channelStatus: ChannelStatus.Inuse,
   imageUrl: undefined,
   createdAt: undefined,
   updatedAt: undefined,
@@ -32,6 +34,7 @@ interface ChannelAttributes {
   channelCharacterId: string;
   displayName: string;
   imageUrl: string;
+  channelStatus?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +67,14 @@ export class Channel
 
   @Column({ type: DataType.STRING, field: "image_url" })
   imageUrl: string;
+
+  @Column({
+    type: DataType.STRING(64),
+    field: "channel_status",
+    allowNull: true,
+    defaultValue: ChannelStatus.Inuse,
+  })
+  channelStatus: ChannelStatus;
 
   @CreatedAt
   @Column({ field: "created_at" })
