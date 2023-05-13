@@ -25,6 +25,7 @@ export default gql`
     channelCharacterId: String
     channelCharacter: ChannelCharacter
     channelStatus: ChannelStatus
+    count: Int
   }
 
   input CreateChannelInput {
