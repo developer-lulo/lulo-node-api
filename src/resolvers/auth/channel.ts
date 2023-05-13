@@ -47,14 +47,16 @@ export const userChannels: Resolver<
       });
     }
   );
-  return userChannelRecords.map((chR) => {
-    return {
-      ...chR.dataValues,
-      channelStatus: chR.dataValues.channelStatus as ChannelStatus,
-      updatedAt: chR.updatedAt.toISOString(),
-      createdAt: chR.updatedAt.toISOString(),
-    };
-  });
+  return userChannelRecords
+    .map((chR) => {
+      return {
+        ...chR.dataValues,
+        channelStatus: chR.dataValues.channelStatus as ChannelStatus,
+        updatedAt: chR.updatedAt.toISOString(),
+        createdAt: chR.updatedAt.toISOString(),
+      };
+    })
+    .filter((c) => c.channelStatus !== ChannelStatus.Stored);
 };
 
 export const channelUsers: Resolver<
