@@ -3,6 +3,7 @@ import {
   ChannelMessageStatus,
   ChannelMessageType,
   Message,
+  MessageResolvers,
   MutationChangeMessageStatusArgs,
   MutationSendMessageOnChannelArgs,
   QueryChannelMessagesArgs,

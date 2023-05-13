@@ -1,4 +1,4 @@
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import {
   Resolver,
   ResolverTypeWrapper,
@@ -11,6 +11,7 @@ import {
   MutationCreateChannelArgs,
   ChannelStatus,
   MutationChangeChannelStatusArgs,
+  ChannelMessageStatus,
 } from "../../generated/gql-types";
 import luloDatabase from "../../models";
 import { GraphQLContext } from "../../services/apollo-service";
@@ -188,5 +189,16 @@ export const ChannelType: ChannelResolvers<any, Channel> = {
       updatedAt: characterRecord.updatedAt.toISOString(),
       createdAt: characterRecord.createdAt.toISOString(),
     };
+  },
+
+  count: async (parent: Channel, args: {}, options: any) => {
+    const pendingMessages = await luloDatabase.models.ChannelMessage.findAll({
+      where: {
+        channelId: parent.id,
+        messageStatus: ChannelMessageStatus.Pending,
+      },
+    });
+
+    return pendingMessages.length;
   },
 };

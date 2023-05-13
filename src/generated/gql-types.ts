@@ -29,6 +29,7 @@ export type Channel = {
   channelCharacter?: Maybe<ChannelCharacter>;
   channelCharacterId?: Maybe<Scalars['String']>;
   channelStatus?: Maybe<ChannelStatus>;
+  count?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['String']>;
   displayName?: Maybe<Scalars['String']>;
   id: Scalars['String'];
@@ -253,6 +254,7 @@ export type ResolversTypes = {
   ChannelMessageType: ChannelMessageType;
   ChannelStatus: ChannelStatus;
   CreateChannelInput: CreateChannelInput;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Message: ResolverTypeWrapper<Message>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -272,6 +274,7 @@ export type ResolversParentTypes = {
   Channel: Channel;
   ChannelCharacter: ChannelCharacter;
   CreateChannelInput: CreateChannelInput;
+  Int: Scalars['Int'];
   Message: Message;
   Mutation: {};
   Query: {};
@@ -287,6 +290,7 @@ export type ChannelResolvers<ContextType = any, ParentType extends ResolversPare
   channelCharacter?: Resolver<Maybe<ResolversTypes['ChannelCharacter']>, ParentType, ContextType>;
   channelCharacterId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   channelStatus?: Resolver<Maybe<ResolversTypes['ChannelStatus']>, ParentType, ContextType>;
+  count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
