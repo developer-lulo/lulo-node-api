@@ -1,26 +1,12 @@
 #!/bin/bash
 
-# Set variables
-# Get the parent folder path
-parent_folder=$(dirname "$(dirname "$(readlink -f "$0")")")
-
-# Load environment variables from .env file in the parent folder
-env_file="$parent_folder/.env"
-if [[ -f "$env_file" ]]; then
-    source "$env_file"
-else
-    echo "Error: .env file not found in the parent folder"
-    exit 1
-fi
-
-
-DB_HOST="$LULO_DB_HOST"
-DB_PASSWORD="$LULO_DB_PASS" 
+DB_HOST="localhost"
+DB_PASSWORD="dmrHYt3f7^wg^CPYKs^zQdAi1u6Lq*#"
 
 DB_PORT="3306"
 DB_USER="root"
 DB_NAME="lulo"
-BACKUP_DIR="./backups"
+BACKUP_DIR="./"
 BUCKET_NAME="lulo-db-backups"
 SERVICE_ACCOUNT_KEY="./lulo-380819-a3e0e142c1df.json"
 

@@ -52,11 +52,8 @@ cd db-backups
 # Make the script executable
 chmod +x script.sh 
 
+# exec the script
+./script.sh 
 
 
-```
-
-or if you want to schedule a task to execute it time by time 
-
-```
 ```

@@ -2,6 +2,7 @@ import { Express, Request, Response } from "express";
 import { getMeMiddleWare } from "../services/auth-service";
 import { handler as SigInHandler } from "./auth/signin";
 import { handler as SignUpHandler } from "./auth/signup";
+import { handler as DbBackupHandler } from "./scripts/db-backup";
 
 import packageJson from "../../package.json";
 
@@ -59,6 +60,11 @@ const routes: LuloRoute[] = [
       userHasAccessToChannelMiddleware, // Check if user has access to the current channel
     ],
     handler: getFileHandler,
+  },
+  {
+    path: "/db/make-backup",
+    type: "get",
+    handler: DbBackupHandler,
   },
 ];
 
