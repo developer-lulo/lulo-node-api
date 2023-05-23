@@ -41,3 +41,22 @@ pm2 start lulo-node-api
 
 pm2 restart lulo-node-api
 ```
+
+
+# Backing up the Database
+
+To create a new DB Backup just need to run the next commands
+
+```sh
+cd db-backups 
+# Make the script executable
+chmod +x script.sh 
+
+
+
+```
+
+or if you want to schedule a task to execute it time by time 
+
+```
+```
