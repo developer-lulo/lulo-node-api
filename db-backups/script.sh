@@ -1,14 +1,21 @@
 #!/bin/bash
 
 # Set variables
+# Get the parent folder path
+parent_folder=$(dirname "$(dirname "$(readlink -f "$0")")")
 
-## LOCAL
-# DB_HOST="localhost"
-# DB_PASSWORD="1qaz2wsx"
+# Load environment variables from .env file in the parent folder
+env_file="$parent_folder/.env"
+if [[ -f "$env_file" ]]; then
+    source "$env_file"
+else
+    echo "Error: .env file not found in the parent folder"
+    exit 1
+fi
 
-## PROD 
-DB_HOST="34.133.222.229"
-DB_PASSWORD="dmrHYt3f7^wg^CPYKs^zQdAi1u6Lq*#" 
+
+DB_HOST="$LULO_DB_HOST"
+DB_PASSWORD="$LULO_DB_PASS" 
 
 DB_PORT="3306"
 DB_USER="root"
@@ -24,11 +31,11 @@ gcloud auth activate-service-account --key-file="$SERVICE_ACCOUNT_KEY"
 CURRENT_DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 BACKUP_FILE="$BACKUP_DIR/backup_$CURRENT_DATE.sql"
 
-# Perform the backup using mysqldump // --skip-lock-tables to avoid 5.7 mysql errors 
-mysqldump --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD --skip-lock-tables $DB_NAME > $BACKUP_FILE
+# Perform the backup using mysqldump // 
+mysqldump --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD $DB_NAME > $BACKUP_FILE
 
 # Optional: Compress the backup file
-# gzip $BACKUP_FILE
+gzip $BACKUP_FILE
 
 # Upload the backup file to Google Cloud Storage
-# gsutil cp $BACKUP_FILE.gz gs://$BUCKET_NAME/
+gsutil cp $BACKUP_FILE.gz gs://$BUCKET_NAME/
