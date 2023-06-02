@@ -5,10 +5,10 @@ const CHARACTERS = [
   {
     id: "14d0e85d-4374-4932-80a8-b72b9390fb3d",
     description:
-      "Déjame ser tu asistente en la tarea de mantener a salvo tus recuerdos importantes. Mi capacidad de análisis me permite predecir tus necesidades con base en tus preguntas y solicitudes. ¿Te gustaría que trabajemos juntos en esto?",
-    display_name: "Shikamaru",
+      "¡Hola! ¡Soy Lulito! Estoy aquí para ayudarte con la creación y gestión de tus tareas y proyectos personales. Juntos, podemos organizar listas de tareas  ¡Juntos, podemos hacer grandes cosas! ¡Cuenta conmigo!",
+    display_name: "Lulito",
     image_url:
-      "https://static.myfigurecollection.net/upload/items/large/1005668.jpg",
+      "https://storage.googleapis.com/lulo-380819.appspot.com/public/lulito.png",
     created_at: new Date(),
     updated_at: new Date(),
   },
