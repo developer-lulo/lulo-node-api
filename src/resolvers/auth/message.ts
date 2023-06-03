@@ -6,6 +6,7 @@ import {
   MessageResolvers,
   MutationChangeMessageStatusArgs,
   MutationSendMessageOnChannelArgs,
+  MutationUpdateMessageBasicInfoArgs,
   QueryChannelMessagesArgs,
   RequireFields,
   Resolver,
@@ -31,22 +32,22 @@ export const channelMessages: Resolver<
   args: QueryChannelMessagesArgs,
   context: GraphQLContext
 ) => {
-  const messages = await luloDatabase.models.ChannelMessage.findAll({
-    where: {
-      channelId: args.channelId,
-    },
-  });
-
-  return messages
-    .filter((m) => m.messageStatus !== ChannelMessageStatus.Stored)
-    .map((m) => {
-      return {
-        ...m.dataValues,
-        createdAt: m.dataValues.createdAt.toISOString(),
-        updatedAt: m.dataValues.updatedAt.toISOString(),
-      };
+    const messages = await luloDatabase.models.ChannelMessage.findAll({
+      where: {
+        channelId: args.channelId,
+      },
     });
-};
+
+    return messages
+      .filter((m) => m.messageStatus !== ChannelMessageStatus.Stored)
+      .map((m) => {
+        return {
+          ...m.dataValues,
+          createdAt: m.dataValues.createdAt.toISOString(),
+          updatedAt: m.dataValues.updatedAt.toISOString(),
+        };
+      });
+  };
 
 export const sendMessageOnChannel: Resolver<
   ResolverTypeWrapper<Message>,
@@ -58,49 +59,49 @@ export const sendMessageOnChannel: Resolver<
   args: MutationSendMessageOnChannelArgs,
   context: GraphQLContext
 ) => {
-  // validate if channel exists
-  const channelExists = await luloDatabase.models.Channel.findByPk(
-    args.input.channelId
-  );
-  if (!channelExists) {
-    throw new ForbiddenError(
-      `Sorry but the channel with channelId:${args.input.channelId} doesnt exist`
+    // validate if channel exists
+    const channelExists = await luloDatabase.models.Channel.findByPk(
+      args.input.channelId
     );
-  }
+    if (!channelExists) {
+      throw new ForbiddenError(
+        `Sorry but the channel with channelId:${args.input.channelId} doesnt exist`
+      );
+    }
 
-  // validate if current user has permissions to channel
-  const hasPermissions = await hasChannelPermissions({
-    userId: context.me.id,
-    channelId: args.input.channelId,
-  });
+    // validate if current user has permissions to channel
+    const hasPermissions = await hasChannelPermissions({
+      userId: context.me.id,
+      channelId: args.input.channelId,
+    });
 
-  if (!hasPermissions) {
-    throw new ForbiddenError("User cannot sent messages on this channel");
-  }
+    if (!hasPermissions) {
+      throw new ForbiddenError("User cannot sent messages on this channel");
+    }
 
-  const message = await luloDatabase.models.ChannelMessage.create({
-    id: uuidv4(),
-    channelId: args.input.channelId,
-    messageStatus: ChannelMessageStatus.Pending,
-    messageType: ChannelMessageType.Task,
-    text: args.input.text,
-    userId: context.me.id,
-  });
+    const message = await luloDatabase.models.ChannelMessage.create({
+      id: uuidv4(),
+      channelId: args.input.channelId,
+      messageStatus: ChannelMessageStatus.Pending,
+      messageType: ChannelMessageType.Task,
+      text: args.input.text,
+      userId: context.me.id,
+    });
 
-  const messageCreated = {
-    ...message.dataValues,
-    createdAt: message.createdAt.toISOString(),
-    updatedAt: message.updatedAt.toISOString(),
+    const messageCreated = {
+      ...message.dataValues,
+      createdAt: message.createdAt.toISOString(),
+      updatedAt: message.updatedAt.toISOString(),
+    };
+
+    const publishPayload: MessageCreatedOnChannelObject = {
+      channelId: args.input.channelId,
+      messageCreated,
+    };
+    pubsub.publish("MESSAGE_CREATED_ON_CHANNEL", publishPayload);
+
+    return messageCreated;
   };
-
-  const publishPayload: MessageCreatedOnChannelObject = {
-    channelId: args.input.channelId,
-    messageCreated,
-  };
-  pubsub.publish("MESSAGE_CREATED_ON_CHANNEL", publishPayload);
-
-  return messageCreated;
-};
 
 export const messageCreatedOnChannel: SubscriptionResolver<
   ResolverTypeWrapper<Message>,
@@ -139,13 +140,45 @@ export const changeMessageStatus: Resolver<
   args: Partial<MutationChangeMessageStatusArgs>,
   context: GraphQLContext
 ) => {
-  const message = await luloDatabase.models.ChannelMessage.findByPk(
-    args.input.messageId
-  );
+    const message = await luloDatabase.models.ChannelMessage.findByPk(
+      args.input.messageId
+    );
+
+    await message.update({
+      messageStatus: args.input.messageStatus,
+      updatedAt: new Date()
+    });
+
+    const updatedMessage = await message.reload();
+
+    return {
+      ...updatedMessage.dataValues,
+      updatedAt: updatedMessage.updatedAt.toISOString(),
+      createdAt: updatedMessage.createdAt.toISOString(),
+    };
+  };
+
+
+export const updateMessageBasicInfo: Resolver<ResolverTypeWrapper<Message>, {}, any, Partial<MutationUpdateMessageBasicInfoArgs>> = async (
+  parent: any,
+  args: Partial<MutationUpdateMessageBasicInfoArgs>,
+  context: GraphQLContext
+) => {
+  const message = await luloDatabase.models.ChannelMessage.findByPk(args.input.messageId)
+
+  const updateObject: any = {}
+
+  if (args.input.description) {
+    updateObject.description = args.input.description
+  }
+  if (args.input.text) {
+    updateObject.text = args.input.text
+  }
 
   await message.update({
-    messageStatus: args.input.messageStatus,
-  });
+    ...updateObject,
+    updatedAt: new Date()
+  })
 
   const updatedMessage = await message.reload();
 
@@ -154,4 +187,5 @@ export const changeMessageStatus: Resolver<
     updatedAt: updatedMessage.updatedAt.toISOString(),
     createdAt: updatedMessage.createdAt.toISOString(),
   };
-};
+
+}

@@ -8,6 +8,7 @@ export default gql`
   type Mutation {
     sendMessageOnChannel(input: SendMessageInput): Message
     changeMessageStatus(input: ChangeMessageStatusInput): Message
+    updateMessageBasicInfo(input: UpdateMessageBasicInfo): Message
   }
 
   type Subscription {
@@ -27,6 +28,7 @@ export default gql`
   type Message {
     id: String
     text: String
+    description: String
     messageType: ChannelMessageType
     messageStatus: ChannelMessageStatus
     # userId: String
@@ -45,5 +47,11 @@ export default gql`
   input ChangeMessageStatusInput {
     messageId: String!
     messageStatus: ChannelMessageStatus
+  }
+
+  input UpdateMessageBasicInfo {
+    messageId: String!
+    text: String
+    description: String
   }
 `;

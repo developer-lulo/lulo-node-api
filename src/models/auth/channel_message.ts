@@ -19,6 +19,7 @@ import { ChannelMessageStatus, ChannelMessageType } from "../../generated/gql-ty
 interface ChannelMessageAttributes {
   id: string;
   text: string;
+  description: string;
   messageType: ChannelMessageType;
   messageStatus: ChannelMessageStatus;
   userId: string;
@@ -50,6 +51,9 @@ export class ChannelMessage
 
   @Column({ field: "text", type: DataType.TEXT })
   text: string;
+
+  @Column({ field: "description", type: DataType.TEXT })
+  description: string;
 
   @Column({
     type: DataType.STRING(64),

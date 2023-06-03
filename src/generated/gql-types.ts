@@ -72,6 +72,7 @@ export type CreateChannelInput = {
 export type Message = {
   __typename?: 'Message';
   createdAt?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   messageStatus?: Maybe<ChannelMessageStatus>;
   messageType?: Maybe<ChannelMessageType>;
@@ -85,6 +86,7 @@ export type Mutation = {
   changeMessageStatus?: Maybe<Message>;
   createChannel?: Maybe<Channel>;
   sendMessageOnChannel?: Maybe<Message>;
+  updateMessageBasicInfo?: Maybe<Message>;
 };
 
 
@@ -105,6 +107,11 @@ export type MutationCreateChannelArgs = {
 
 export type MutationSendMessageOnChannelArgs = {
   input?: InputMaybe<SendMessageInput>;
+};
+
+
+export type MutationUpdateMessageBasicInfoArgs = {
+  input?: InputMaybe<UpdateMessageBasicInfo>;
 };
 
 export type Query = {
@@ -162,6 +169,12 @@ export type Token = {
   __typename?: 'Token';
   token: Scalars['String'];
   user?: Maybe<User>;
+};
+
+export type UpdateMessageBasicInfo = {
+  description?: InputMaybe<Scalars['String']>;
+  messageId: Scalars['String'];
+  text?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -263,6 +276,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   Token: ResolverTypeWrapper<Token>;
+  UpdateMessageBasicInfo: UpdateMessageBasicInfo;
   User: ResolverTypeWrapper<User>;
 };
 
@@ -283,6 +297,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Subscription: {};
   Token: Token;
+  UpdateMessageBasicInfo: UpdateMessageBasicInfo;
   User: User;
 };
 
@@ -311,6 +326,7 @@ export type ChannelCharacterResolvers<ContextType = any, ParentType extends Reso
 
 export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   messageStatus?: Resolver<Maybe<ResolversTypes['ChannelMessageStatus']>, ParentType, ContextType>;
   messageType?: Resolver<Maybe<ResolversTypes['ChannelMessageType']>, ParentType, ContextType>;
@@ -324,6 +340,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   changeMessageStatus?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationChangeMessageStatusArgs>>;
   createChannel?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, Partial<MutationCreateChannelArgs>>;
   sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
+  updateMessageBasicInfo?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationUpdateMessageBasicInfoArgs>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
