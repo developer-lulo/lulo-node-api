@@ -12,6 +12,7 @@ import {
   ChannelStatus,
   MutationChangeChannelStatusArgs,
   ChannelMessageStatus,
+  MutationUpdateChannelImageArgs,
 } from "../../generated/gql-types";
 import luloDatabase from "../../models";
 import { GraphQLContext } from "../../services/apollo-service";
@@ -20,6 +21,8 @@ import {
   UsersChannelsJunction,
   UsersChannelsJunctionAttributes,
 } from "../../models/auth/users-channels-junction";
+import { hasChannelPermissions } from "../../services/auth-service";
+import { ForbiddenError } from "apollo-server-core";
 
 export const userChannels: Resolver<ResolverTypeWrapper<Channel>[], {}, any, RequireFields<QueryUserChannelsArgs, "userId">> = async (parent, args: QueryUserChannelsArgs) => {
   const userChannelRecords = await luloDatabase.sequelize.transaction(
@@ -159,6 +162,42 @@ export const changeChannelStatus: Resolver<ResolverTypeWrapper<Channel>, {}, any
     createdAt: updatedChannel.createdAt.toISOString(),
   };
 };
+
+export const updateChannelImage: Resolver<ResolverTypeWrapper<Channel>, {}, any, Partial<MutationUpdateChannelImageArgs>> = async (
+  parent: any,
+  args: Partial<MutationUpdateChannelImageArgs>,
+  context: GraphQLContext
+) => {
+
+
+  // validate if current user has permissions to channel
+  const hasPermissions = await hasChannelPermissions({
+    userId: context.me.id,
+    channelId: args.input.channelId,
+  });
+
+  if (!hasPermissions) {
+    throw new ForbiddenError("User cannot update this channel");
+  }
+
+  const channel = await luloDatabase.models.Channel.findByPk(args.input.channelId)
+
+  await channel.update({
+    imageUrl: args.input.newImageUrl,
+    updatedAt: new Date(),
+  })
+
+  channel.reload()
+
+
+  return {
+    ...channel.dataValues,
+    updatedAt: channel.updatedAt.toISOString(),
+    createdAt: channel.createdAt.toISOString(),
+    channelStatus: channel.channelStatus as ChannelStatus,
+  }
+
+}
 
 // type
 export const ChannelType: ChannelResolvers<any, Channel> = {

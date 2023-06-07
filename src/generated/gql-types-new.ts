@@ -92,6 +92,7 @@ export type Mutation = {
   createChannel?: Maybe<Channel>;
   moveMessageToChannel?: Maybe<Message>;
   sendMessageOnChannel?: Maybe<Message>;
+  updateChannelImage?: Maybe<Channel>;
   updateMessageBasicInfo?: Maybe<Message>;
 };
 
@@ -118,6 +119,11 @@ export type MutationMoveMessageToChannelArgs = {
 
 export type MutationSendMessageOnChannelArgs = {
   input?: InputMaybe<SendMessageInput>;
+};
+
+
+export type MutationUpdateChannelImageArgs = {
+  input?: InputMaybe<UpdateChannelImageInput>;
 };
 
 
@@ -180,6 +186,11 @@ export type Token = {
   __typename?: 'Token';
   token: Scalars['String'];
   user?: Maybe<User>;
+};
+
+export type UpdateChannelImageInput = {
+  channelId: Scalars['String'];
+  newImageUrl: Scalars['String'];
 };
 
 export type UpdateMessageBasicInfo = {
@@ -288,6 +299,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   Token: ResolverTypeWrapper<Token>;
+  UpdateChannelImageInput: UpdateChannelImageInput;
   UpdateMessageBasicInfo: UpdateMessageBasicInfo;
   User: ResolverTypeWrapper<User>;
 };
@@ -310,6 +322,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Subscription: {};
   Token: Token;
+  UpdateChannelImageInput: UpdateChannelImageInput;
   UpdateMessageBasicInfo: UpdateMessageBasicInfo;
   User: User;
 };
@@ -354,6 +367,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createChannel?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, Partial<MutationCreateChannelArgs>>;
   moveMessageToChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationMoveMessageToChannelArgs>>;
   sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
+  updateChannelImage?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, Partial<MutationUpdateChannelImageArgs>>;
   updateMessageBasicInfo?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationUpdateMessageBasicInfoArgs>>;
 };
 

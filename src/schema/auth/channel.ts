@@ -9,6 +9,7 @@ export default gql`
   type Mutation {
     createChannel(input: CreateChannelInput): Channel
     changeChannelStatus(input: ChangeChannelStatusInput): Channel
+    updateChannelImage(input: UpdateChannelImageInput): Channel
   }
 
   enum ChannelStatus {
@@ -38,5 +39,10 @@ export default gql`
   input ChangeChannelStatusInput {
     channelId: String!
     channelStatus: ChannelStatus
+  }
+
+  input UpdateChannelImageInput {
+    channelId: String!
+    newImageUrl: String!
   }
 `;
