@@ -209,6 +209,11 @@ export const moveMessageToChannel: Resolver<ResolverTypeWrapper<Message>, {}, an
 
   const message = await luloDatabase.models.ChannelMessage.findByPk(args.input.messageId)
 
+  if (!message) {
+    throw new ForbiddenError("Message not found");
+    
+  }
+
   await message.update({
     channelId: args.input.newChannelId,
     updatedAt: new Date(),
