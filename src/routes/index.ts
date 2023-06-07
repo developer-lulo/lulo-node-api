@@ -46,7 +46,7 @@ const routes: LuloRoute[] = [
     path: "/auth/files/upload",
     type: 'post',
     middlewares: [
-      // getMeMiddleWare, // add "me" object to req (AUTH)
+      getMeMiddleWare, // add "me" object to req (AUTH)
       uploadMulterMiddleware
     ],
     handler: uploadFileHandler
