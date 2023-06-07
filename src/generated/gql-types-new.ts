@@ -80,11 +80,17 @@ export type Message = {
   updatedAt?: Maybe<Scalars['String']>;
 };
 
+export type MoveMessageToChannelInput = {
+  messageId: Scalars['String'];
+  newChannelId: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   changeChannelStatus?: Maybe<Channel>;
   changeMessageStatus?: Maybe<Message>;
   createChannel?: Maybe<Channel>;
+  moveMessageToChannel?: Maybe<Message>;
   sendMessageOnChannel?: Maybe<Message>;
   updateMessageBasicInfo?: Maybe<Message>;
 };
@@ -102,6 +108,11 @@ export type MutationChangeMessageStatusArgs = {
 
 export type MutationCreateChannelArgs = {
   input?: InputMaybe<CreateChannelInput>;
+};
+
+
+export type MutationMoveMessageToChannelArgs = {
+  input?: InputMaybe<MoveMessageToChannelInput>;
 };
 
 
@@ -269,6 +280,7 @@ export type ResolversTypes = {
   CreateChannelInput: CreateChannelInput;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Message: ResolverTypeWrapper<Message>;
+  MoveMessageToChannelInput: MoveMessageToChannelInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   SendMessageInput: SendMessageInput;
@@ -290,6 +302,7 @@ export type ResolversParentTypes = {
   CreateChannelInput: CreateChannelInput;
   Int: Scalars['Int'];
   Message: Message;
+  MoveMessageToChannelInput: MoveMessageToChannelInput;
   Mutation: {};
   Query: {};
   SendMessageInput: SendMessageInput;
@@ -339,6 +352,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   changeChannelStatus?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, Partial<MutationChangeChannelStatusArgs>>;
   changeMessageStatus?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationChangeMessageStatusArgs>>;
   createChannel?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, Partial<MutationCreateChannelArgs>>;
+  moveMessageToChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationMoveMessageToChannelArgs>>;
   sendMessageOnChannel?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationSendMessageOnChannelArgs>>;
   updateMessageBasicInfo?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, Partial<MutationUpdateMessageBasicInfoArgs>>;
 };

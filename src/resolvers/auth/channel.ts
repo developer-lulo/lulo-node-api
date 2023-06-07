@@ -21,12 +21,7 @@ import {
   UsersChannelsJunctionAttributes,
 } from "../../models/auth/users-channels-junction";
 
-export const userChannels: Resolver<
-  ResolverTypeWrapper<Channel>[],
-  {},
-  any,
-  RequireFields<QueryUserChannelsArgs, "userId">
-> = async (parent, args: QueryUserChannelsArgs) => {
+export const userChannels: Resolver<ResolverTypeWrapper<Channel>[], {}, any, RequireFields<QueryUserChannelsArgs, "userId">> = async (parent, args: QueryUserChannelsArgs) => {
   const userChannelRecords = await luloDatabase.sequelize.transaction(
     async (transaction: Transaction) => {
       const channelsJ = await luloDatabase.models.UsersChannelsJunction.findAll(
@@ -41,6 +36,7 @@ export const userChannels: Resolver<
       });
 
       return await luloDatabase.models.Channel.findAll({
+        order: [['updatedAt', 'ASC']],
         where: {
           id: channelIds,
         },
@@ -60,12 +56,7 @@ export const userChannels: Resolver<
     .filter((c) => c.channelStatus !== ChannelStatus.Stored);
 };
 
-export const channelUsers: Resolver<
-  ResolverTypeWrapper<User>[],
-  {},
-  any,
-  RequireFields<QueryChannelUsersArgs, "channelId">
-> = async (
+export const channelUsers: Resolver<ResolverTypeWrapper<User>[], {}, any, RequireFields<QueryChannelUsersArgs, "channelId">> = async (
   parent: any,
   args: QueryChannelUsersArgs,
   context: GraphQLContext
@@ -100,12 +91,7 @@ export const channelUsers: Resolver<
   });
 };
 
-export const createChannel: Resolver<
-  ResolverTypeWrapper<Channel>,
-  {},
-  any,
-  Partial<MutationCreateChannelArgs>
-> = async (
+export const createChannel: Resolver<ResolverTypeWrapper<Channel>, {}, any, Partial<MutationCreateChannelArgs>> = async (
   parent: any,
   args: MutationCreateChannelArgs,
   context: GraphQLContext
@@ -150,12 +136,7 @@ export const createChannel: Resolver<
   };
 };
 
-export const changeChannelStatus: Resolver<
-  ResolverTypeWrapper<Channel>,
-  {},
-  any,
-  Partial<MutationChangeChannelStatusArgs>
-> = async (
+export const changeChannelStatus: Resolver<ResolverTypeWrapper<Channel>, {}, any, Partial<MutationChangeChannelStatusArgs>> = async (
   parent: any,
   args: Partial<MutationChangeChannelStatusArgs>,
   context: GraphQLContext
@@ -166,6 +147,7 @@ export const changeChannelStatus: Resolver<
 
   await channel.update({
     channelStatus: args.input.channelStatus,
+    updatedAt: new Date()
   });
 
   const updatedChannel = await channel.reload();

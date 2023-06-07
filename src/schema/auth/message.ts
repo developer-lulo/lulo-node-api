@@ -9,6 +9,7 @@ export default gql`
     sendMessageOnChannel(input: SendMessageInput): Message
     changeMessageStatus(input: ChangeMessageStatusInput): Message
     updateMessageBasicInfo(input: UpdateMessageBasicInfo): Message
+    moveMessageToChannel(input: MoveMessageToChannelInput): Message
   }
 
   type Subscription {
@@ -53,5 +54,10 @@ export default gql`
     messageId: String!
     text: String
     description: String
+  }
+
+  input MoveMessageToChannelInput {
+    messageId: String!
+    newChannelId: String!
   }
 `;

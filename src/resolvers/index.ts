@@ -23,6 +23,7 @@ import {
   messageCreatedOnChannel,
   changeMessageStatus,
   updateMessageBasicInfo,
+  moveMessageToChannel,
 } from "./auth/message";
 
 export const resolvers: Resolvers = {
@@ -45,6 +46,7 @@ export const resolvers: Resolvers = {
     updateMessageBasicInfo: combineResolvers(isAuthenticated, updateMessageBasicInfo),
     createChannel: combineResolvers(isAuthenticated, createChannel),
     changeChannelStatus: combineResolvers(isAuthenticated, changeChannelStatus),
+    moveMessageToChannel: combineResolvers(isAuthenticated, moveMessageToChannel)
     // lulo mutations
   },
   Subscription: {

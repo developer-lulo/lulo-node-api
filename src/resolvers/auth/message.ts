@@ -5,6 +5,7 @@ import {
   Message,
   MessageResolvers,
   MutationChangeMessageStatusArgs,
+  MutationMoveMessageToChannelArgs,
   MutationSendMessageOnChannelArgs,
   MutationUpdateMessageBasicInfoArgs,
   QueryChannelMessagesArgs,
@@ -22,94 +23,85 @@ import { hasChannelPermissions } from "../../services/auth-service";
 import { ForbiddenError } from "apollo-server-express";
 import { pubsub } from "../../services/subscriptions-service";
 
-export const channelMessages: Resolver<
-  ResolverTypeWrapper<Message>[],
-  {},
-  any,
-  RequireFields<QueryChannelMessagesArgs, "channelId">
-> = async (
+export const channelMessages: Resolver<ResolverTypeWrapper<Message>[], {}, any, RequireFields<QueryChannelMessagesArgs, "channelId">> = async (
   parent: any,
   args: QueryChannelMessagesArgs,
   context: GraphQLContext
 ) => {
-    const messages = await luloDatabase.models.ChannelMessage.findAll({
-      where: {
-        channelId: args.channelId,
-      },
+  const messages = await luloDatabase.models.ChannelMessage.findAll({
+    order: [['createdAt', 'DESC']],
+    where: {
+      channelId: args.channelId,
+    },
+  });
+
+  return messages
+    .filter((m) => m.messageStatus !== ChannelMessageStatus.Stored)
+    .map((m) => {
+      return {
+        ...m.dataValues,
+        createdAt: m.dataValues.createdAt.toISOString(),
+        updatedAt: m.dataValues.updatedAt.toISOString(),
+      };
     });
+};
 
-    return messages
-      .filter((m) => m.messageStatus !== ChannelMessageStatus.Stored)
-      .map((m) => {
-        return {
-          ...m.dataValues,
-          createdAt: m.dataValues.createdAt.toISOString(),
-          updatedAt: m.dataValues.updatedAt.toISOString(),
-        };
-      });
-  };
-
-export const sendMessageOnChannel: Resolver<
-  ResolverTypeWrapper<Message>,
-  {},
-  any,
-  Partial<MutationSendMessageOnChannelArgs>
-> = async (
+export const sendMessageOnChannel: Resolver<ResolverTypeWrapper<Message>, {}, any, Partial<MutationSendMessageOnChannelArgs>> = async (
   parent: any,
   args: MutationSendMessageOnChannelArgs,
   context: GraphQLContext
 ) => {
-    // validate if channel exists
-    const channelExists = await luloDatabase.models.Channel.findByPk(
-      args.input.channelId
+  // validate if channel exists
+  const channelExists = await luloDatabase.models.Channel.findByPk(
+    args.input.channelId
+  );
+  if (!channelExists) {
+    throw new ForbiddenError(
+      `Sorry but the channel with channelId:${args.input.channelId} doesnt exist`
     );
-    if (!channelExists) {
-      throw new ForbiddenError(
-        `Sorry but the channel with channelId:${args.input.channelId} doesnt exist`
-      );
-    }
+  }
 
-    // validate if current user has permissions to channel
-    const hasPermissions = await hasChannelPermissions({
-      userId: context.me.id,
-      channelId: args.input.channelId,
-    });
+  // validate if current user has permissions to channel
+  const hasPermissions = await hasChannelPermissions({
+    userId: context.me.id,
+    channelId: args.input.channelId,
+  });
 
-    if (!hasPermissions) {
-      throw new ForbiddenError("User cannot sent messages on this channel");
-    }
+  if (!hasPermissions) {
+    throw new ForbiddenError("User cannot sent messages on this channel");
+  }
 
-    const message = await luloDatabase.models.ChannelMessage.create({
-      id: uuidv4(),
-      channelId: args.input.channelId,
-      messageStatus: ChannelMessageStatus.Pending,
-      messageType: ChannelMessageType.Task,
-      text: args.input.text,
-      userId: context.me.id,
-    });
+  const message = await luloDatabase.models.ChannelMessage.create({
+    id: uuidv4(),
+    channelId: args.input.channelId,
+    messageStatus: ChannelMessageStatus.Pending,
+    messageType: ChannelMessageType.Task,
+    text: args.input.text,
+    userId: context.me.id,
+  });
 
-    const messageCreated = {
-      ...message.dataValues,
-      createdAt: message.createdAt.toISOString(),
-      updatedAt: message.updatedAt.toISOString(),
-    };
+  const channel = await luloDatabase.models.Channel.findByPk(args.input.channelId)
 
-    const publishPayload: MessageCreatedOnChannelObject = {
-      channelId: args.input.channelId,
-      messageCreated,
-    };
-    pubsub.publish("MESSAGE_CREATED_ON_CHANNEL", publishPayload);
+  await channel.update({
+    updatedAt: new Date(),
+  })
 
-    return messageCreated;
+  const messageCreated = {
+    ...message.dataValues,
+    createdAt: message.createdAt.toISOString(),
+    updatedAt: message.updatedAt.toISOString(),
   };
 
-export const messageCreatedOnChannel: SubscriptionResolver<
-  ResolverTypeWrapper<Message>,
-  "messageCreatedOnChannel",
-  {},
-  any,
-  RequireFields<SubscriptionMessageCreatedOnChannelArgs, "channelId">
-> = {
+  const publishPayload: MessageCreatedOnChannelObject = {
+    channelId: args.input.channelId,
+    messageCreated,
+  };
+  pubsub.publish("MESSAGE_CREATED_ON_CHANNEL", publishPayload);
+
+  return messageCreated;
+};
+
+export const messageCreatedOnChannel: SubscriptionResolver<ResolverTypeWrapper<Message>, "messageCreatedOnChannel", {}, any, RequireFields<SubscriptionMessageCreatedOnChannelArgs, "channelId">> = {
   subscribe: withFilter(
     () => pubsub.asyncIterator("MESSAGE_CREATED_ON_CHANNEL"),
     async (
@@ -130,33 +122,34 @@ export interface MessageCreatedOnChannelObject {
   messageCreated: Message;
 }
 
-export const changeMessageStatus: Resolver<
-  ResolverTypeWrapper<Message>,
-  {},
-  any,
-  Partial<MutationChangeMessageStatusArgs>
-> = async (
+export const changeMessageStatus: Resolver<ResolverTypeWrapper<Message>, {}, any, Partial<MutationChangeMessageStatusArgs>> = async (
   parent: any,
   args: Partial<MutationChangeMessageStatusArgs>,
   context: GraphQLContext
 ) => {
-    const message = await luloDatabase.models.ChannelMessage.findByPk(
-      args.input.messageId
-    );
+  const message = await luloDatabase.models.ChannelMessage.findByPk(
+    args.input.messageId
+  );
 
-    await message.update({
-      messageStatus: args.input.messageStatus,
-      updatedAt: new Date()
-    });
+  await message.update({
+    messageStatus: args.input.messageStatus,
+    updatedAt: new Date()
+  });
 
-    const updatedMessage = await message.reload();
+  const channel = await luloDatabase.models.Channel.findByPk(message.channelId)
 
-    return {
-      ...updatedMessage.dataValues,
-      updatedAt: updatedMessage.updatedAt.toISOString(),
-      createdAt: updatedMessage.createdAt.toISOString(),
-    };
+  await channel.update({
+    updatedAt: new Date(),
+  })
+
+  const updatedMessage = await message.reload();
+
+  return {
+    ...updatedMessage.dataValues,
+    updatedAt: updatedMessage.updatedAt.toISOString(),
+    createdAt: updatedMessage.createdAt.toISOString(),
   };
+};
 
 
 export const updateMessageBasicInfo: Resolver<ResolverTypeWrapper<Message>, {}, any, Partial<MutationUpdateMessageBasicInfoArgs>> = async (
@@ -182,10 +175,55 @@ export const updateMessageBasicInfo: Resolver<ResolverTypeWrapper<Message>, {}, 
 
   const updatedMessage = await message.reload();
 
+  const channel = await luloDatabase.models.Channel.findByPk(message.channelId)
+
+  await channel.update({
+    updatedAt: new Date(),
+  })
+
   return {
     ...updatedMessage.dataValues,
     updatedAt: updatedMessage.updatedAt.toISOString(),
     createdAt: updatedMessage.createdAt.toISOString(),
   };
+
+}
+
+
+export const moveMessageToChannel: Resolver<ResolverTypeWrapper<Message>, {}, any, Partial<MutationMoveMessageToChannelArgs>> = async (
+  parent: any,
+  args: Partial<MutationMoveMessageToChannelArgs>,
+  context: GraphQLContext
+) => {
+
+
+  // validate if current user has permissions to channel
+  const hasPermissions = await hasChannelPermissions({
+    userId: context.me.id,
+    channelId: args.input.newChannelId,
+  });
+
+  if (!hasPermissions) {
+    throw new ForbiddenError("User cannot sent messages on this channel");
+  }
+
+  const message = await luloDatabase.models.ChannelMessage.findByPk(args.input.messageId)
+
+  await message.update({
+    channelId: args.input.newChannelId,
+    updatedAt: new Date(),
+  })
+  message.reload()
+
+  const channel = await luloDatabase.models.Channel.findByPk(args.input.newChannelId)
+  await channel.update({
+    updatedAt: new Date()
+  })
+
+  return {
+    ...message.dataValues,
+    createdAt: message.dataValues.createdAt.toISOString(),
+    updatedAt: message.dataValues.updatedAt.toISOString(),
+  }
 
 }
