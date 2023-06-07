@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lulo-380819",
+  "private_key_id": "a3e0e142c1df0c53279a6a10fc04d4c21fce18da",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDa+9lwx9v1/FlG\nKKMXGYT/pLXus6mKILC8bZwJiGI9vzoFlBUSz24FVTh814EX8Y4h1XuFoOUYWF7q\n206BUIJJFw2krL302GISXn0PlOF1iEse8aFRzIFgzKX4CH/w0TumIHDYDualxMGj\nciA5V5kyUR2sf7Lgy7uYX7F4vGOI4Fpq0NLJhIfFBCPZjP08Ir2rtkepnlbL5ytp\nuevybY4zdVFThY+C0DV8WDEIAgAdg1oM/iLLZDZ+369Bt+21sTFShbQneZRRGgTk\nbf/Ja5JPwN/nAftiUmHL7160titS2qD3wyorSEzqvtMzvUNPzm47yWmzymZQcSpF\n/Q1HCbE/AgMBAAECggEABmdcBfjKPWjKQYt5rXjBE2rBKUBWwmPPV0tLR1oWKWEY\ntMYOUbUALia+VqREsasOMX4ZNSCt4mbfK7YLFywAC1whuYGVsn3LbGcX+Cct6q54\nJ+kAAzDcTbTeW6EAAM5VlLeZJTBWXV2iHgH94D9oCvklSYCYfgtnKn8N5Q55SKzd\nC1TILQHk5nrWgGKCU3kR26eOguwWkk/HzxxSfHbLbbtvEk19gMeUHKmhkyquR//w\n9NSmFfFOl0k4uTg0ECLK5kyytn9kXm6cmbTPu8e0YWWyTlPtTkPNYczKVhuku5ys\noy+rdJhH+OWGwqRm5hNpmqsI+7EejtN0itUWPUL7EQKBgQD3ui/LVr1Jo9VrHDyO\nOg0D3gHeYH/LOltz5f1KDRFQU7JKECrZJvKQVFM34d35akgKXur8AKfI+KXmSc1g\n7mE0rVEjIvYYeDPLEecVZAfcMpmhAYSF9NuMm3t5URpXLbSwxvxYw5XBUIQL5OPy\n0UyRF9Kg7KzeaEy0XYoMpNKbLwKBgQDiS+9wETDqD1F0QGse7mVtTQPM789VwB33\npWF0CnUI1yob75fqnj4aIy2dm+vdM01ZmFrCh8L39tslAr7mOs8UnC0EiRMYwbnw\n2NEgJgP7bTjq35TiM0btBOI2Wajww2HhhAVQIlbnFC94aIpujUrwkK1L/Jlj2S4Y\nf9dgOmWG8QKBgQCrat2JodLHcyPJwzcv34GEDIpUe4fSc+Y2c43qQNKbN98mGrvb\nmXS9ZGxVPejgnqeM7ZNCn516lnwNt0HzceA3mDqNyrJpyjtkqFWz2o0J1MWzwJ4Y\nJ5AIYsp07yb/7jObI4YYUfZ9Vx6YMGF/c069E7P/AOa524hAQn21NBQ7pwKBgBz1\nwM+js5HQogjxkYPk2GATghABBJShwHQH2x/hkrat6nqmv9dLpwDrTZQk9xtYzGZR\n5BOPEjlvgv4KiumlzwiBMBWrgSEi8avL439svge4I5eTQ1drXoFIpbZ05PTi3Czj\nG1b0/hAWeji7kDOzq0p8CWF3Ex4/FfIWsjZjYsjRAoGBAKhMBd6Qaqzrng4MWl0n\n/oLwn/QzQDof1QUitjmnlUYkarnxlkp8woY3BIjIm6jHi8pxvZr3FeiolC66cMSE\noYhZSVEdpT7CEepVjU42vEFHIdbPI39ZV1slPpdi/lXeM8Ke44Zl5eaZOnZub6g1\nh2joxg+akbVJanlF7XPU6saP\n-----END PRIVATE KEY-----\n",
+  "client_email": "lulo-server-db-backups@lulo-380819.iam.gserviceaccount.com",
+  "client_id": "109910470531228210746",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lulo-server-db-backups%40lulo-380819.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

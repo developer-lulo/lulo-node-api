@@ -1,18 +1,13 @@
 import { Express, Request, Response } from "express";
-import { getMeMiddleWare } from "../services/auth-service";
+import packageJson from "../../package.json";
 import { handler as SigInHandler } from "./auth/signin";
 import { handler as SignUpHandler } from "./auth/signup";
 import { handler as DbBackupHandler } from "./scripts/db-backup";
+import { handler as uploadFileHandler, uploadMulterMiddleware } from './auth/files/upload'
 
-import packageJson from "../../package.json";
+import { getMeMiddleWare } from "../services/auth-service";
 
-import {
-  handler as uploadFileHandler,
-  uploadMulterMiddleware,
-} from "./channel/files/upload";
 
-import { handler as getFileHandler } from "./channel/files/get";
-import { userHasAccessToChannelMiddleware } from "./channel/files/utils";
 
 export interface LuloRoute {
   path: string;
@@ -43,29 +38,19 @@ const routes: LuloRoute[] = [
     handler: SignUpHandler,
   },
   {
-    path: "/channel/:channelId/upload/file",
-    type: "post",
-    handler: uploadFileHandler,
-    middlewares: [
-      getMeMiddleWare, // add "me" object to req (AUTH)
-      userHasAccessToChannelMiddleware, //  Check if user has access to the current channel
-      uploadMulterMiddleware, // upload the file
-    ],
-  },
-  {
-    path: "/channel/:channelId/get/file/:fileName",
-    type: "get",
-    middlewares: [
-      getMeMiddleWare, // Check if user is auth
-      userHasAccessToChannelMiddleware, // Check if user has access to the current channel
-    ],
-    handler: getFileHandler,
-  },
-  {
     path: "/db/make-backup",
     type: "get",
     handler: DbBackupHandler,
   },
+  {
+    path: "/auth/files/upload",
+    type: 'post',
+    middlewares: [
+      // getMeMiddleWare, // add "me" object to req (AUTH)
+      uploadMulterMiddleware
+    ],
+    handler: uploadFileHandler
+  }
 ];
 
 export const loadRoutes = (app: Express) => {
@@ -78,7 +63,7 @@ export const loadRoutes = (app: Express) => {
         try {
           if (route.middlewares && route.middlewares.length) {
             for (let middleware of route.middlewares) {
-              await middleware(req, res, () => {});
+              await middleware(req, res, () => { });
             }
           }
           next();
@@ -124,4 +109,4 @@ export const loadRoutes = (app: Express) => {
   });
 };
 
-const newNextFuncion = () => {};
+const newNextFuncion = () => { };
