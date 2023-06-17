@@ -82,9 +82,9 @@ export const sendMessageOnChannel: Resolver<ResolverTypeWrapper<Message>, {}, an
 
   const channel = await luloDatabase.models.Channel.findByPk(args.input.channelId)
 
-  await channel.update({
-    updatedAt: new Date(),
-  })
+  channel.setDataValue('updatedAt', new Date())
+
+  await channel.save()
 
   const messageCreated = {
     ...message.dataValues,

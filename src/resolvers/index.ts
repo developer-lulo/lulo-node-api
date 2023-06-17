@@ -31,9 +31,9 @@ export const resolvers: Resolvers = {
   Query: {
     // auth queries
     me: combineResolvers(isAuthenticated, me),
-    userChannels,
-    channelMessages,
-    channelUsers,
+    userChannels: combineResolvers(isAuthenticated, userChannels),
+    channelMessages:combineResolvers(isAuthenticated, channelMessages),
+    channelUsers: combineResolvers(isAuthenticated, channelUsers),
     // lulo queries
     channelCharacters,
   },

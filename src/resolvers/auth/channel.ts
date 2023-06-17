@@ -53,7 +53,7 @@ export const userChannels: Resolver<ResolverTypeWrapper<Channel>[], {}, any, Req
         ...chR.dataValues,
         channelStatus: chR.dataValues.channelStatus as ChannelStatus,
         updatedAt: chR.updatedAt.toISOString(),
-        createdAt: chR.updatedAt.toISOString(),
+        createdAt: chR.createdAt.toISOString(),
       };
     })
     .filter((c) => c.channelStatus !== ChannelStatus.Stored);
