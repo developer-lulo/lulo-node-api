@@ -218,11 +218,11 @@ export const moveMessageToChannel: Resolver<ResolverTypeWrapper<Message>, {}, an
     channelId: args.input.newChannelId,
     updatedAt: new Date(),
   })
-  message.reload()
+  await message.reload()
 
   const channel = await luloDatabase.models.Channel.findByPk(args.input.newChannelId)
   await channel.update({
-    updatedAt: new Date()
+    updatedAt: new Date(),
   })
 
   return {

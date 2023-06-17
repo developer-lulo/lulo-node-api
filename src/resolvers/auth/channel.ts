@@ -39,7 +39,7 @@ export const userChannels: Resolver<ResolverTypeWrapper<Channel>[], {}, any, Req
       });
 
       return await luloDatabase.models.Channel.findAll({
-        order: [['updatedAt', 'ASC']],
+        order: [['updatedAt', 'DESC']],
         where: {
           id: channelIds,
         },
