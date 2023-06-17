@@ -138,9 +138,9 @@ export const changeMessageStatus: Resolver<ResolverTypeWrapper<Message>, {}, any
 
   const channel = await luloDatabase.models.Channel.findByPk(message.channelId)
 
-  await channel.update({
-    updatedAt: new Date(),
-  })
+  channel.setDataValue('updatedAt', new Date())
+
+  await channel.save()
 
   const updatedMessage = await message.reload();
 
