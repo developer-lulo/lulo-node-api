@@ -8,6 +8,7 @@ import { UsersChannelsJunction } from "./auth/users-channels-junction";
 import { ChannelMessage } from "./auth/channel_message";
 import { ChannelCharacter } from "./auth/channel_character";
 import { ENVIRONMENT } from "../config/constants";
+import { UsersCharactersJunction } from "./auth/users-characters-junction";
 
 const databaseConfig = databaseConnection[ENVIRONMENT];
 const sequelize = new Sequelize({
@@ -18,6 +19,7 @@ const sequelize = new Sequelize({
     UsersChannelsJunction,
     ChannelMessage,
     ChannelCharacter,
+    UsersCharactersJunction,
   ],
 });
 
@@ -30,6 +32,7 @@ const luloDatabase = {
     UsersChannelsJunction,
     ChannelMessage,
     ChannelCharacter,
+    UsersCharactersJunction
   },
 };
 

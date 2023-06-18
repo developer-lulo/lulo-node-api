@@ -3,6 +3,7 @@
 - npx sequelize-cli migration:generate --name {name}
 - the file will be created on dist/migrations, move it to src/migrations and update .js to .ts
 - run migrations usign `yarn migrations` 
+
 # Codegen
 
 - comment the getMe function when creating graphql context to avoid the auth validation

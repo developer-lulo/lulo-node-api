@@ -5,10 +5,10 @@ const CHARACTERS = [
   {
     id: "14d0e85d-4374-4932-80a8-b72b9390fb3d",
     description:
-      "¡Hola! ¡Soy Lulito! Estoy aquí para ayudarte con la creación y gestión de tus tareas y proyectos personales. Juntos, podemos organizar listas de tareas  ¡Juntos, podemos hacer grandes cosas! ¡Cuenta conmigo!",
-    display_name: "Lulito",
+      "¡Hola! ¡Soy Piñita! Estoy aquí para ayudarte con la creación y gestión de tus tareas y proyectos personales. Juntos, podemos organizar listas de tareas  ¡Juntos, podemos hacer grandes cosas! ¡Cuenta conmigo!",
+    display_name: "Piñita",
     image_url:
-      "https://storage.googleapis.com/lulo-380819.appspot.com/public/lulito.png",
+      "https://storage.googleapis.com/lulo-380819.appspot.com/public/25333842-e447-452d-9627-20d915ccb4c5-pina.png",
     created_at: new Date(),
     updated_at: new Date(),
   },

@@ -18,7 +18,21 @@ export const UserType: UserResolvers<any, User> = {
     args: {},
     context: GraphQLContext
   ) => {
-    const characters = await luloDatabase.models.ChannelCharacter.findAll();
+    
+    const charactersUserJunction = await luloDatabase.models.UsersCharactersJunction.findAll({
+      where: {
+        userId: parent.id
+      }
+    });
+
+    const charactersIds = charactersUserJunction.map(chJ => chJ.characterId)
+
+    const characters = await luloDatabase.models.ChannelCharacter.findAll({
+      where: {
+        id: charactersIds
+      }
+    });
+
     let mappedCharacters = characters.map((ch) => {
       return {
         ...ch.dataValues,
