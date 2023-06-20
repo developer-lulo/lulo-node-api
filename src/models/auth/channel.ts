@@ -27,6 +27,7 @@ export const DEFAULT_CHANNEL_ON_CREATE_USER: ChannelAttributes = {
   imageUrl: undefined,
   createdAt: undefined,
   updatedAt: undefined,
+  index: 9999,
 };
 
 interface ChannelAttributes {
@@ -37,6 +38,7 @@ interface ChannelAttributes {
   channelStatus?: string;
   createdAt: Date;
   updatedAt: Date;
+  index: number;
 }
 
 interface ChannelCreationAttributes
@@ -61,6 +63,9 @@ export class Channel
     defaultValue: uuidv4(),
   })
   id: string;
+
+  @Column({ type: DataType.INTEGER, field: "index" })
+  index: number;
 
   @Column({ type: DataType.STRING(128), field: "display_name" })
   displayName: string;
