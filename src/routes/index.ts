@@ -24,6 +24,7 @@ const routes: LuloRoute[] = [
       return {
         name: packageJson.name,
         version: packageJson.version,
+        lastChange: packageJson["last-change"]
       };
     },
   },

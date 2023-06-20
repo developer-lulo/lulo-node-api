@@ -1,7 +1,8 @@
 {
   "name": "lulo-node-api",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "",
+  "last-change":"Added new props to channelCharacter model",
   "main": "index.js",
   "type": "module",
   "scripts": {

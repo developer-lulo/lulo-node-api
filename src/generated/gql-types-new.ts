@@ -39,6 +39,7 @@ export type Channel = {
 
 export type ChannelCharacter = {
   __typename?: 'ChannelCharacter';
+  action?: Maybe<ChannelCharacterAction>;
   createdAt?: Maybe<Scalars['String']>;
   description: Scalars['String'];
   displayName: Scalars['String'];
@@ -46,6 +47,11 @@ export type ChannelCharacter = {
   imageUrl: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
 };
+
+export enum ChannelCharacterAction {
+  ActiveNInactive = 'ACTIVE_N_INACTIVE',
+  CreateNew = 'CREATE_NEW'
+}
 
 export enum ChannelMessageStatus {
   Done = 'DONE',
@@ -285,6 +291,7 @@ export type ResolversTypes = {
   ChangeMessageStatusInput: ChangeMessageStatusInput;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelCharacter: ResolverTypeWrapper<ChannelCharacter>;
+  ChannelCharacterAction: ChannelCharacterAction;
   ChannelMessageStatus: ChannelMessageStatus;
   ChannelMessageType: ChannelMessageType;
   ChannelStatus: ChannelStatus;
@@ -341,6 +348,7 @@ export type ChannelResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type ChannelCharacterResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChannelCharacter'] = ResolversParentTypes['ChannelCharacter']> = {
+  action?: Resolver<Maybe<ResolversTypes['ChannelCharacterAction']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

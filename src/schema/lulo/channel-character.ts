@@ -20,10 +20,11 @@ export default gql`
     description: String!
     updatedAt: String
     createdAt: String
+    action: ChannelCharacterAction
   }
 
-  #   input SendMessageInput {
-  #     text: String!
-  #     channelId: String!
-  #   }
+  enum ChannelCharacterAction {
+    CREATE_NEW
+    ACTIVE_N_INACTIVE
+  }
 `;

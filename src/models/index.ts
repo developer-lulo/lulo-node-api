@@ -6,7 +6,7 @@ import { User } from "./auth/user";
 import { Channel } from "./auth/channel";
 import { UsersChannelsJunction } from "./auth/users-channels-junction";
 import { ChannelMessage } from "./auth/channel_message";
-import { ChannelCharacter } from "./auth/channel_character";
+import { ChannelCharacter } from "./lulo/channel_character";
 import { ENVIRONMENT } from "../config/constants";
 import { UsersCharactersJunction } from "./auth/users-characters-junction";
 

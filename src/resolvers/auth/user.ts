@@ -29,7 +29,8 @@ export const UserType: UserResolvers<any, User> = {
 
     const characters = await luloDatabase.models.ChannelCharacter.findAll({
       where: {
-        id: charactersIds
+        id: charactersIds,
+        isActive: true
       }
     });
 

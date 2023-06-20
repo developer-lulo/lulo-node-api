@@ -9,8 +9,9 @@ import {
   DataType,
   HasMany,
 } from "sequelize-typescript";
-import { Channel } from "./channel";
+import { Channel } from "../auth/channel";
 import { v4 as uuidv4 } from "uuid";
+import { ChannelCharacterAction } from "../../generated/gql-types";
 export interface ChannelCharacterAttributes {
   id: string;
   displayName: string;
@@ -18,6 +19,8 @@ export interface ChannelCharacterAttributes {
   description: string;
   createdAt?: Date;
   updatedAt?: Date;
+  action: ChannelCharacterAction;
+  isActive: boolean;
 }
 
 interface ChannelCharacterCreationAttributes
@@ -47,6 +50,21 @@ export class ChannelCharacter
     allowNull: false,
   })
   displayName: string;
+
+  @Column({
+    field: "action",
+    type: DataType.STRING(128),
+    allowNull: false,
+  })
+  action: ChannelCharacterAction;
+  
+  @Column({
+    field: "is_active",
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  })
+  isActive: boolean;
 
   @Column({ field: "image_url", type: DataType.STRING, allowNull: false })
   imageUrl: string;

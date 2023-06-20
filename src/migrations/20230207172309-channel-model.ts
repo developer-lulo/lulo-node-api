@@ -1,5 +1,5 @@
 import { QueryInterface, DataTypes, QueryTypes } from "sequelize";
-import { ChannelCharacterAttributes } from "../models/auth/channel_character";
+import { ChannelCharacterAttributes } from "../models/lulo/channel_character";
 
 const CHARACTERS = [
   {

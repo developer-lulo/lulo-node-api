@@ -12,7 +12,7 @@ import {
   BelongsTo,
   ForeignKey,
 } from "sequelize-typescript";
-import { ChannelCharacter } from "./channel_character";
+import { ChannelCharacter } from "../lulo/channel_character";
 import { User } from "./user";
 import { UsersChannelsJunction } from "./users-channels-junction";
 import { v4 as uuidv4 } from "uuid";
