@@ -21,10 +21,17 @@ export default gql`
     updatedAt: String
     createdAt: String
     action: ChannelCharacterAction
+    key: ChannelCharacterKey
   }
 
   enum ChannelCharacterAction {
     CREATE_NEW
     ACTIVE_N_INACTIVE
+  }
+
+  enum ChannelCharacterKey {
+    UN_SET
+    PINNAPLE
+    ORANGE
   }
 `;

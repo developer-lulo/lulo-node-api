@@ -45,12 +45,19 @@ export type ChannelCharacter = {
   displayName: Scalars['String'];
   id: Scalars['String'];
   imageUrl: Scalars['String'];
+  key?: Maybe<ChannelCharacterKey>;
   updatedAt?: Maybe<Scalars['String']>;
 };
 
 export enum ChannelCharacterAction {
   ActiveNInactive = 'ACTIVE_N_INACTIVE',
   CreateNew = 'CREATE_NEW'
+}
+
+export enum ChannelCharacterKey {
+  Orange = 'ORANGE',
+  Pinnaple = 'PINNAPLE',
+  UnSet = 'UN_SET'
 }
 
 export enum ChannelMessageStatus {
@@ -292,6 +299,7 @@ export type ResolversTypes = {
   Channel: ResolverTypeWrapper<Channel>;
   ChannelCharacter: ResolverTypeWrapper<ChannelCharacter>;
   ChannelCharacterAction: ChannelCharacterAction;
+  ChannelCharacterKey: ChannelCharacterKey;
   ChannelMessageStatus: ChannelMessageStatus;
   ChannelMessageType: ChannelMessageType;
   ChannelStatus: ChannelStatus;
@@ -354,6 +362,7 @@ export type ChannelCharacterResolvers<ContextType = any, ParentType extends Reso
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  key?: Resolver<Maybe<ResolversTypes['ChannelCharacterKey']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

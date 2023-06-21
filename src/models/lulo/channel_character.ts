@@ -11,7 +11,7 @@ import {
 } from "sequelize-typescript";
 import { Channel } from "../auth/channel";
 import { v4 as uuidv4 } from "uuid";
-import { ChannelCharacterAction } from "../../generated/gql-types";
+import { ChannelCharacterAction, ChannelCharacterKey } from "../../generated/gql-types";
 export interface ChannelCharacterAttributes {
   id: string;
   displayName: string;
@@ -21,6 +21,7 @@ export interface ChannelCharacterAttributes {
   updatedAt?: Date;
   action: ChannelCharacterAction;
   isActive: boolean;
+  key: ChannelCharacterKey
 }
 
 interface ChannelCharacterCreationAttributes
@@ -57,6 +58,13 @@ export class ChannelCharacter
     allowNull: false,
   })
   action: ChannelCharacterAction;
+
+  @Column({
+    field: "key",
+    type: DataType.STRING(128),
+    allowNull: false,
+  })
+  key: ChannelCharacterKey;
   
   @Column({
     field: "is_active",

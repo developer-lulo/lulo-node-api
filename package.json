@@ -1,8 +1,8 @@
 {
   "name": "lulo-node-api",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "",
-  "last-change":"add index sort for channels ",
+  "last-change":"add key on characters and source on messages to share",
   "main": "index.js",
   "type": "module",
   "scripts": {
