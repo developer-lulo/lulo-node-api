@@ -74,6 +74,7 @@ export const sendMessageOnChannel: Resolver<ResolverTypeWrapper<Message>, {}, an
   const message = await luloDatabase.models.ChannelMessage.create({
     id: uuidv4(),
     channelId: args.input.channelId,
+    sourceChannelId: args.input.channelId,
     messageStatus: ChannelMessageStatus.Pending,
     messageType: ChannelMessageType.Task,
     text: args.input.text,

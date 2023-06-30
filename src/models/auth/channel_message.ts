@@ -24,6 +24,7 @@ interface ChannelMessageAttributes {
   messageStatus: ChannelMessageStatus;
   userId: string;
   channelId: string;
+  sourceChannelId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -85,6 +86,10 @@ export class ChannelMessage
   @ForeignKey(() => Channel)
   @Column({ type: DataType.STRING(128), field: "channel_id" })
   channelId: string;
+
+  @ForeignKey(() => Channel)
+  @Column({ type: DataType.STRING(128), field: "source_channel_id" })
+  sourceChannelId: string;
 
   // relations
   // Check this: https://www.npmjs.com/package/sequelize-typescript#type-inference:~:text=sequelize%2Dtypescript%20cannot%20know%20which%20foreign%20key%20to%20use%20for%20which%20relation.%20So%20you%20have%20to%20add%20the%20foreign%20keys%20explicitly%3A
