@@ -1,8 +1,8 @@
 {
   "name": "lulo-node-api",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "",
-  "last-change":"add key on characters and source on messages to share",
+  "last-change":"https://www.notion.so/Back-Al-crear-un-usuario-crear-la-juntura-9da96c06d5f449499ebec5e0f056564e",
   "main": "index.js",
   "type": "module",
   "scripts": {
