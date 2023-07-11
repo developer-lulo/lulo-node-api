@@ -53,11 +53,10 @@ export const handler = async (req: Request, res: Response) => {
           }
         );
 
-        const pinnapple = await luloDatabase.models.ChannelCharacter.findOne({
-          where: {
-            key: ChannelCharacterKey.Pinnaple
-          }
-        })
+        const characters = await luloDatabase.models.ChannelCharacter.findAll()
+
+        const pinnapple = characters.find((character) => character.key === ChannelCharacterKey.Pinnaple)
+
         await luloDatabase.models.UsersCharactersJunction.create(
           {
             characterId: pinnapple.dataValues.id,
@@ -69,18 +68,16 @@ export const handler = async (req: Request, res: Response) => {
           }
         );
 
-        transaction.commit();
-
         return {
           userId: newUser.dataValues.id,
         };
       } catch (error) {
-        transaction.rollback();
+        await transaction.rollback();
         throw new Error(error.message);
       }
     })
     .catch((error) => {
-
+      console.error(error)
       throw {
         error,
         message: "Something went wrong creating the new user",
