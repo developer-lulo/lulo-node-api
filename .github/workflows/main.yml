@@ -1,18 +1,1 @@
-name: Claude Code Review
 
-permissions:
-  contents: read
-  pull-requests: write
-
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Felipemantilla01/claude-code-reviewer@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- 
