@@ -27,3 +27,4 @@ jobs:
         uses: Felipemantilla01/claude-code-reviewer@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
