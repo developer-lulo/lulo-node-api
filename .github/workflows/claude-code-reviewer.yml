@@ -22,9 +22,9 @@ jobs:
       
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
-      
-      - name: Install dependencies
-        run: npm install
-      
+
       - name: Run Claude Code Reviewer
         uses: Felipemantilla01/claude-code-reviewer@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
