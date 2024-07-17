@@ -7,12 +7,12 @@ permissions:
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-
+    
 jobs:
-  test:
+  release:
+    name: release
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - uses: Felipemantilla01/claude-code-reviewer@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- 
