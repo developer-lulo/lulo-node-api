@@ -22,7 +22,7 @@ jobs:
       
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
-      
+
       - name: Run Claude Code Reviewer
         uses: Felipemantilla01/claude-code-reviewer@main
         with:
